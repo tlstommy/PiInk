@@ -132,5 +132,6 @@ redPIDaccessFile.txt
 Flask/img/*
 !Flask/redditImgs/.gitkeep
 Flask/redPIDaccessFile.txt
+Flask/piink-log.txt
 secretsINFO.py
 settings.json

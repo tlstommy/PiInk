@@ -1,75 +1,13 @@
 No process found using port 80!
 starting frame webserver!
-/home/pi/Redd-Ink/Flask
-{'jpeg', 'png', 'jpg'}
+/home/pi/PiInk/Flask
+{'png', 'jpg', 'jpeg'}
 Detected 7-Colour (UC8159)
  * Serving Flask app "webserver" (lazy loading)
  * Environment: production
    WARNING: This is a development server. Do not use it in a production deployment.
    Use a production WSGI server instead.
  * Debug mode: off
-Traceback (most recent call last):
-  File "/home/pi/Redd10.0.0.77 - - [14/May/2023 01:33:21] "[37mGET / HTTP/1.1[0m" 200 -
-/usr/local/lib/python3.9/dist-packages/inky/inky_uc8159.py:333: UserWarning: Busy Wait: Timed out after 0.20s
-  warnings.warn("Busy Wait: Timed out after {:0.2f}s".format(time.time() - t_start))
-/usr/local/lib/python3.9/dist-packages/inky/inky_uc8159.py:333: UserWarning: Busy Wait: Timed out after 32.01s
-  warnings.warn("Busy Wait: Timed out after {:0.2f}s".format(time.time() - t_start))
-10.0.0.77 - - [14/May/2023 01:34:58] "[37mPOST / HTTP/1.1[0m" 200 -
-[2023-05-14 01:34:58,590] ERROR in app: Exception on / [POST]
-Traceback (most recent call last):
-  File "/usr/lib/python3/dist-packages/flask/app.py", line 2447, in wsgi_app
-    response = self.full_dispatch_request()
-  File "/usr/lib/python3/dist-packages/flask/app.py", line 1952, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "/usr/lib/python3/dist-packages/flask/app.py", line 1821, in handle_user_exception
-    reraise(exc_type, exc_value, tb)
-  File "/usr/lib/python3/dist-packages/flask/_compat.py", line 39, in reraise
-    raise value
-  File "/usr/lib/python3/dist-packages/flask/app.py", line 1950, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "/usr/lib/python3/dist-packages/flask/app.py", line 1936, in dispatch_request
-    return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/pi/Redd-Ink/Flask/webserver.py", line 94, in upload_file
-    updateEink(filename,orientation,adjustAR)
-  File "/home/pi/Redd-Ink/Flask/webserver.py", line 183, in updateEink
-    os.remove(os.path.join(PATH, "img/",filename))
-FileNotFoundError: [Errno 2] No such file or directory: '/home/pi/Redd-Ink/Flask/img/0D0E9898-41AE-4495-AD2F-F1F5ECDD8133.jpeg'
-10.0.0.77 - - [14/May/2023 01:34:58] "[35m[1mPOST / HTTP/1.1[0m" 500 -
-/usr/local/lib/python3.9/dist-packages/inky/inky_uc8159.py:323: UserWarning: Busy Wait: Held high. Waiting for 0.20s
-  warnings.warn("Busy Wait: Held high. Waiting for {:0.2f}s".format(timeout))
-10.0.0.77 - - [14/May/2023 01:53:30] "[37mPOST / HTTP/1.1[0m" 200 -
-10.0.0.77 - - [14/May/2023 01:53:31] "[37mPOST / HTTP/1.1[0m" 200 -
-10.0.0.77 - - [14/May/2023 01:53:33] "[37mPOST / HTTP/1.1[0m" 200 -
-[2023-05-14 01:54:00,859] ERROR in app: Exception on / [POST]
-Traceback (most recent call last):
-  File "/usr/lib/python3/dist-packages/flask/app.py", line 2447, in wsgi_app
-    response = self.full_dispatch_request()
-  File "/usr/lib/python3/dist-packages/flask/app.py", line 1952, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "/usr/lib/python3/dist-packages/flask/app.py", line 1821, in handle_user_exception
-    reraise(exc_type, exc_value, tb)
-  File "/usr/lib/python3/dist-packages/flask/_compat.py", line 39, in reraise
-    raise value
-  File "/usr/lib/python3/dist-packages/flask/app.py", line 1950, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "/usr/lib/python3/dist-packages/flask/app.py", line 1936, in dispatch_request
-    return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/pi/Redd-Ink/Flask/webserver.py", line 94, in upload_file
-    updateEink(filename,orientation,adjustAR)
-  File "/home/pi/Redd-Ink/Flask/webserver.py", line 183, in updateEink
-    os.remove(os.path.join(PATH, "img/",filename))
-FileNotFoundError: [Errno 2] No such file or directory: '/home/pi/Redd-Ink/Flask/img/0D0E9898-41AE-4495-AD2F-F1F5ECDD8133.jpeg'
-10.0.0.77 - - [14/May/2023 01:54:00] "[35m[1mPOST / HTTP/1.1[0m" 500 -
-10.0.0.77 - - [14/May/2023 01:54:38] "[37mPOST / HTTP/1.1[0m" 200 -
-10.0.0.77 - - [14/May/2023 01:55:46] "[37mGET / HTTP/1.1[0m" 200 -
-10.0.0.77 - - [14/May/2023 01:56:14] "[37mPOST / HTTP/1.1[0m" 200 -
-10.0.0.77 - - [14/May/2023 01:57:22] "[37mPOST / HTTP/1.1[0m" 200 -
-10.0.0.77 - - [14/May/2023 01:58:08] "[37mPOST / HTTP/1.1[0m" 200 -
-10.0.0.77 - - [14/May/2023 01:59:27] "[37mPOST / HTTP/1.1[0m" 200 -
-10.0.0.45 - - [14/May/2023 20:10:01] "[37mGET / HTTP/1.1[0m" 200 -
-10.0.0.45 - - [14/May/2023 20:10:01] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
-10.0.0.45 - - [14/May/2023 20:11:09] "[37mGET / HTTP/1.1[0m" 200 -
-10.0.0.45 - - [14/May/2023 20:11:56] "[37mGET / HTTP/1.1[0m" 200 -
-10.0.0.45 - - [15/May/2023 22:10:42] "[37mGET / HTTP/1.1[0m" 200 -
-10.0.0.45 - - [15/May/2023 22:10:42] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
-/home/pi/Redd-Ink/Flask/start.sh: line 19:   543 Killed                  sudo python webserver.py
+ * Running on http://0.0.0.0:80/ (Press CTRL+C to quit)
+10.0.0.45 - - [12/Jul/2023 13:07:30] "[37mGET / HTTP/1.1[0m" 200 -
+10.0.0.45 - - [12/Jul/2023 13:29:25] "[37mPOST / HTTP/1.1[0m" 200 -
