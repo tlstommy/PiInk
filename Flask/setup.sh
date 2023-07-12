@@ -170,3 +170,4 @@ sleep 1
 
 banner "PiInk"
 print_success "$(print_bold "PiInk has been successfully installed!")"
+print_warn "$(print_bold "Please reboot your pi using 'sudo reboot now'")"
