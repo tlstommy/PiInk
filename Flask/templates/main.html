@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Bootstrap BI/CDN CSS-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <!--Bootstrap CDN JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!--FA CDN-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>PiInk</title>
+    <meta charset="utf-8";>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <nav class="navbar navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand mb-0" href="https://www.github.com"><h2 style="color: #000000;">PiInk</h2></a>
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="navbar-brand mb-0 btn btn-danger" href="https://twitter.com/XurTrack" type="button" data-bs-toggle="modal" data-bs-target="#powerModalCenter" style="color: #000000;">
+                        <i class="fa-sharp fa-solid fa-power-off fa-xl"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav> 
+    <style>
+        /*accordion svg*/
+        .accordion-button::after {
+            background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjQgMTQuMTg3di00LjM3NGMtMi4xNDgtLjc2Ni0yLjcyNi0uODAyLTMuMDI3LTEuNTI5LS4zMDMtLjcyOS4wODMtMS4xNjkgMS4wNTktMy4yMjNsLTMuMDkzLTMuMDkzYy0yLjAyNi45NjMtMi40ODggMS4zNjQtMy4yMjQgMS4wNTktLjcyNy0uMzAyLS43NjgtLjg4OS0xLjUyNy0zLjAyN2gtNC4zNzVjLS43NjQgMi4xNDQtLjggMi43MjUtMS41MjkgMy4wMjctLjc1Mi4zMTMtMS4yMDMtLjEtMy4yMjMtMS4wNTlsLTMuMDkzIDMuMDkzYy45NzcgMi4wNTUgMS4zNjIgMi40OTMgMS4wNTkgMy4yMjQtLjMwMi43MjctLjg4MS43NjQtMy4wMjcgMS41Mjh2NC4zNzVjMi4xMzkuNzYgMi43MjUuOCAzLjAyNyAxLjUyOC4zMDQuNzM0LS4wODEgMS4xNjctMS4wNTkgMy4yMjNsMy4wOTMgMy4wOTNjMS45OTktLjk1IDIuNDctMS4zNzMgMy4yMjMtMS4wNTkuNzI4LjMwMi43NjQuODggMS41MjkgMy4wMjdoNC4zNzRjLjc1OC0yLjEzMS43OTktMi43MjMgMS41MzctMy4wMzEuNzQ1LS4zMDggMS4xODYuMDk5IDMuMjE1IDEuMDYybDMuMDkzLTMuMDkzYy0uOTc1LTIuMDUtMS4zNjItMi40OTItMS4wNTktMy4yMjMuMy0uNzI2Ljg4LS43NjMgMy4wMjctMS41Mjh6bS00Ljg3NS43NjRjLS41NzcgMS4zOTQtLjA2OCAyLjQ1OC40ODggMy41NzhsLTEuMDg0IDEuMDg0Yy0xLjA5My0uNTQzLTIuMTYxLTEuMDc2LTMuNTczLS40OS0xLjM5Ni41ODEtMS43OSAxLjY5My0yLjE4OCAyLjg3N2gtMS41MzRjLS4zOTgtMS4xODUtLjc5MS0yLjI5Ny0yLjE4My0yLjg3NS0xLjQxOS0uNTg4LTIuNTA3LS4wNDUtMy41NzkuNDg4bC0xLjA4My0xLjA4NGMuNTU3LTEuMTE4IDEuMDY2LTIuMTguNDg3LTMuNTgtLjU3OS0xLjM5MS0xLjY5MS0xLjc4NC0yLjg3Ni0yLjE4MnYtMS41MzNjMS4xODUtLjM5OCAyLjI5Ny0uNzkxIDIuODc1LTIuMTg0LjU3OC0xLjM5NC4wNjgtMi40NTktLjQ4OC0zLjU3OWwxLjA4NC0xLjA4NGMxLjA4Mi41MzggMi4xNjIgMS4wNzcgMy41OC40ODggMS4zOTItLjU3NyAxLjc4NS0xLjY5IDIuMTgzLTIuODc1aDEuNTM0Yy4zOTggMS4xODUuNzkyIDIuMjk3IDIuMTg0IDIuODc1IDEuNDE5LjU4OCAyLjUwNi4wNDUgMy41NzktLjQ4OGwxLjA4NCAxLjA4NGMtLjU1NiAxLjEyMS0xLjA2NSAyLjE4Ny0uNDg4IDMuNTguNTc3IDEuMzkxIDEuNjg5IDEuNzg0IDIuODc1IDIuMTgzdjEuNTM0Yy0xLjE4OC4zOTgtMi4zMDIuNzkxLTIuODc3IDIuMTgzem0tNy4xMjUtNS45NTFjMS42NTQgMCAzIDEuMzQ2IDMgM3MtMS4zNDYgMy0zIDMtMy0xLjM0Ni0zLTMgMS4zNDYtMyAzLTN6bTAtMmMtMi43NjIgMC01IDIuMjM4LTUgNXMyLjIzOCA1IDUgNSA1LTIuMjM4IDUtNS0yLjIzOC01LTUtNXoiLz48L3N2Zz4=");
+            animation: rotateClockwise 5s 1;
+            transform: translateZ(0), scale(1.3);
+        }
+        @keyframes rotateClockwise{
+            0% {
+                transform: rotate(0deg);
+            }
+            20% {
+                transform: rotate(18deg);
+            }
+            40% {
+                transform: rotate(36deg);
+            }
+            60% {
+                transform: rotate(54deg);
+            }
+            80% {
+                transform: rotate(72deg);
+            }
+            100% {
+                transform: rotate(90deg);
+            }
+        }
+        .accordion-button:not(.collapsed)::after {
+            background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjQgMTMuNjE2di0zLjIzMmMtMS42NTEtLjU4Ny0yLjY5My0uNzUyLTMuMjE5LTIuMDE5di0uMDAxYy0uNTI3LTEuMjcxLjEtMi4xMzQuODQ3LTMuNzA3bC0yLjI4NS0yLjI4NWMtMS41NjEuNzQyLTIuNDMzIDEuMzc1LTMuNzA3Ljg0N2gtLjAwMWMtMS4yNjktLjUyNi0xLjQzNS0xLjU3Ni0yLjAxOS0zLjIxOWgtMy4yMzJjLS41ODIgMS42MzUtLjc0OSAyLjY5Mi0yLjAxOSAzLjIxOWgtLjAwMWMtMS4yNzEuNTI4LTIuMTMyLS4wOTgtMy43MDctLjg0N2wtMi4yODUgMi4yODVjLjc0NSAxLjU2OCAxLjM3NSAyLjQzNC44NDcgMy43MDctLjUyNyAxLjI3MS0xLjU4NCAxLjQzOC0zLjIxOSAyLjAydjMuMjMyYzEuNjMyLjU4IDIuNjkyLjc0OSAzLjIxOSAyLjAxOS41MyAxLjI4Mi0uMTE0IDIuMTY2LS44NDcgMy43MDdsMi4yODUgMi4yODZjMS41NjItLjc0MyAyLjQzNC0xLjM3NSAzLjcwNy0uODQ3aC4wMDFjMS4yNy41MjYgMS40MzYgMS41NzkgMi4wMTkgMy4yMTloMy4yMzJjLjU4Mi0xLjYzNi43NDktMi42OSAyLjAyNy0zLjIyMmguMDAxYzEuMjYyLS41MjQgMi4xMi4xMDEgMy42OTguODUxbDIuMjg1LTIuMjg2Yy0uNzQzLTEuNTYzLTEuMzc1LTIuNDMzLS44NDgtMy43MDYuNTI3LTEuMjcxIDEuNTg4LTEuNDQgMy4yMjEtMi4wMjF6bS0xMiAzLjM4NGMtMi43NjIgMC01LTIuMjM5LTUtNXMyLjIzOC01IDUtNSA1IDIuMjM5IDUgNS0yLjIzOCA1LTUgNXptMy01YzAgMS42NTQtMS4zNDYgMy0zIDNzLTMtMS4zNDYtMy0zIDEuMzQ2LTMgMy0zIDMgMS4zNDYgMyAzeiIvPjwvc3ZnPg==");
+        }
+        html {
+            overflow: scroll;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+    <br>
+    {% block content %}
+    <div class="container">
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-danger ">
+            <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
+            <b style="color: #000000;">{{ message }}</b>
+        </div>
+        {% endfor %}
+
+        {% block page_content %}{% endblock %}
+    </div>
+    {% endblock %}
+    <h1 class="d-flex justify-content-center align-items-center"><u>Controls</u></h1>
+    <div class="d-flex justify-content-center" style="padding-left: 10%;padding-right: 10%; padding-bottom: 10%;" id="controlDiv">   
+        <form method="post" enctype=multipart/form-data>
+            <br>
+            <div class="vh-1 d-flex justify-content-center align-items-center">
+                <div class="panel-body" style="border: 2px solid;border-radius: 15px;padding: 10px;">
+                    <h2 class="d-flex justify-content-center">
+                        Upload An Image
+                    </h2>
+                    <br>
+                    <div class="mb-3" style="width: 85%;padding-left: 15%;">
+                        <label for="fileUpload" class="form-label">
+                            <h4>
+                                <i class="bi bi-file-earmark-image-fill"></i>
+                                Upload Image File
+                            </h4>
+                        </label>
+                        <input class="form-control" type="file" name="file" id="fileUpload">
+                    </div>
+                    <br>
+                    <div class="mb-3" style="width: 85%;padding-left: 15%;">
+                        <label for="imageLinkUpload" class="form-label">
+                            <h4>
+                                <i class="bi bi-link-45deg"></i>
+                                Upload Image Link
+                            </h4>
+                        </label>
+                        <input name="text" placeholder="Image url" id="imageLinkUpload" style="width:100%">
+                    </div>
+                    <br>
+                    <div class="mb-3 d-flex justify-content-center">
+                        <button style="width: 80%;" id="icon" type="submit" name="submit" value="Upload Image" class="btn btn-primary"> 
+                        <i class="bi bi-upload"></i>
+                            &nbsp;Upload Image To Frame   
+                        </button>
+                    </div> 
+                    <br>
+                    <div class="accordion" id="settings-accordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="settingsAccordion" >
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="background-color: #FFFFFF;">
+                                    <b style="color:#000000">Frame Settings</b>
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="settings-accordion" data-bs-parent="#settings-accordion">
+                                <div class="accordion-body">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <table class="table table-sm table-borderless" style="width: 100%;">
+                                                    <tr>
+                                                        <th>Frame Orientation</th>
+                                                        <th>General</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <input class="form-check-input" type="radio" id="frame_orientation_vertical" name="frame_orientation" value="Vertical Orientation" {{ verticalOrientationRadioCheck }}>
+                                                            <label class="form-check-label" for="frame_orientation_vertical">
+                                                                Portrait
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="preserveARSwitch" name="adjust_ar" value="true" {{ arSwitchCheck }}>
+                                                                <label class="form-check-label" for="preserveARSwitch">Adjust Aspect Ratio</label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <input class="form-check-input" type="radio" id="frame_orientation_horizontal" name="frame_orientation" value="Horizontal Orientation" {{ horizontalOrientationRadioCheck }}>
+                                                            <label class="form-check-label" for="frame_orientation_horizontal">
+                                                                Landscape
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <button type="submit" name="submit" value="rotateImage" id="rotateButton" class="btn btn-primary" style="width: 100%;">
+                                                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                                                    &nbsp;Rotate Image 90&deg;
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="mb-3 d-flex justify-content-center">
+                                        <input style="width: 80%;" type="submit" name="submit" value="Save Settings" class="btn btn-primary"></input>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <form method="post" enctype=multipart/form-data>
+        <div class="modal fade" id="powerModalCenter" tabindex="-1" role="dialog" aria-labelledby="powerModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="powerModalLongTitle" >
+                            Frame Power Options
+                        </h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="border: #000000 3px solid;border-radius: 25px;padding-right: 10%;"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <table>
+                                    <tr>
+                                        <th style="padding: 10px;">
+                                            <input class="btn" type="submit" name="submit" value="Reboot" style="width: 100%;background-color: #ffba00;font-weight: bold;"></input>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                    <td style="padding: 10px;">
+                                        <input class="btn" type="submit" name="submit" value="Shutdown" style="width: 100%;background-color:#ED4F32;font-weight: bold;"></input>
+                                    </td>
+                                    </tr>
+                                </table>    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </from>
+    <br><br><br><br>
+</body>
+<script>
+
+    // Stop the form resubmission on page refresh
+    
+    if (window.history.replaceState) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+    
+</script>
+<div style="position:fixed;width: 100%;bottom: 0;left: 0;right: 0;">
+    <footer class="bg-dark text-center text-white">
+        <div class="text-center p-3">
+            <a href="https://github.com/" style="color: #FFFFFF;"><i class="bi bi-github fa-2xl"></i></a>
+        </div>
+    </footer>
+</div>
