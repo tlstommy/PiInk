@@ -220,7 +220,7 @@ def adjustAspectRatio(img,adjustARBool):
             # Fixed by height
             resizedWidth = round(ratioHeight * img.width)
             resizedHeight = h
-        imgResized = img.resize((resizedWidth, resizedHeight), Image.ANTIALIAS)
+        imgResized = img.resize((resizedWidth, resizedHeight), Image.LANCZOS)
         background = Image.new('RGBA', (w, h), (0, 0, 0, 255))
 
         #offset image for background and paste the image
