@@ -129,9 +129,9 @@ dmypy.json
 .pyre/
 
 redPIDaccessFile.txt
-Flask/img/*
-!Flask/redditImgs/.gitkeep
-Flask/redPIDaccessFile.txt
-Flask/piink-log.txt
+PiInk/img/*
+!PiInk/redditImgs/.gitkeep
+PiInk/redPIDaccessFile.txt
+PiInk/piink-log.txt
 secretsINFO.py
 piink-log.txt
