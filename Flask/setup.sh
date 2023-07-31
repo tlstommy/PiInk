@@ -162,7 +162,7 @@ fi
 # Install required pip packages
 print_bold "\nInstalling required packages with pip"
 sudo pip install -r requirements.txt > /dev/null &
-show_loader "Installing packages...   "
+show_loader "   Installing packages...   "
 
 print_success "Packages Installed!\n"
 sleep 1
