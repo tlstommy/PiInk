@@ -150,10 +150,10 @@ def loadSettings():
     horizontalOrient = ""
     verticalOrient = ""
     try:
-        jsonFile = open("../config/settings.json")
+        jsonFile = open(os.path.join(PATH,"config/settings.json"))
     except:
         saveSettings("","checked",'aria-checked="false"')
-        jsonFile = open("settings.json")
+        jsonFile = open(os.path.join(PATH,"config/settings.json"))
     settingsData = json.load(jsonFile)
     jsonFile.close()
     if settingsData.get("orientation") == "Horizontal":
@@ -172,7 +172,7 @@ def saveSettings(orientationHorizontal,orientationVertical,adjustAR):
         "orientation":orientationSetting,
         "adjust_aspect_ratio":adjustAR,
     }
-    with open("../config/settings.json", "w") as f:
+    with open(os.path.join(PATH,"config/settings.json"), "w") as f:
         json.dump(jsonStr, f)
 
 def updateEink(filename,orientation,adjustAR):
