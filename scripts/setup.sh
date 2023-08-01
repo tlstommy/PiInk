@@ -161,7 +161,7 @@ touch piink-log.txt
 print_bold "Updating rc.local"
 sleep 1
 if grep -Fxq "exit 0" /etc/rc.local; then
-  sudo sed -i "/exit 0/i cd $currentDir && sudo bash $currentDir/start.sh > $currentDir/piink-log.txt 2>&1 &" /etc/rc.local
+  sudo sed -i "/exit 0/i cd $currentDir && sudo bash $currentDir/scripts/start.sh > ../piink-log.txt 2>&1 &" /etc/rc.local
   print_success "Added startup line to rc.local!"
 else
   print_error "ERROR: Unable to add to rc.local"
@@ -169,7 +169,7 @@ fi
 
 # Install required pip packages
 print_header  "\nInstalling required packages with pip"
-sudo pip install -r requirements.txt > /dev/null &
+sudo pip install -r ../config/requirements.txt > /dev/null &
 show_loader "   Installing packages...   "
 
 print_success "Packages Installed!\n"

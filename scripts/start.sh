@@ -22,4 +22,4 @@ fi
 
 echo "starting frame webserver!"
 
-sudo python webserver.py
+sudo python src/webserver.py
