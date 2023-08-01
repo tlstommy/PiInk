@@ -35,7 +35,8 @@ class infoGen:
         img = qr.make_image(fill_color="black", back_color="white")
         self.urlQR = img
         self.buildImage()
-
+    def deleteImage(self):
+        os.system("sudo rm ../img/*")
 
     #build info image for the frame    
     def buildImage(self):
@@ -77,11 +78,12 @@ class infoGen:
         
         detailsText = f"PiInk is an E Ink based picture frame. The E Ink \nframe allows images to remain on the frame while \npower is shut off. The frame can be controlled \nby accessing the WebUI listed above via \nthe QR code or at {self.hostname}.local . "
         imageDraw.text((15,self.urlQR.pixel_size+50),detailsText,fill=(0,0,0),font=font)
-        
+        self.deleteImage()
         print(self.urlQR.pixel_size)
         print( os.getcwd())
-        script_directory = os.path.dirname(os.path.abspath(__file__))
+        script_directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         image_path = os.path.join(script_directory, "img/infoImage.png")
+        print(image_path)
         #infoImage.show()
         infoImage.save(image_path)
 

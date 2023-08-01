@@ -1,6 +1,7 @@
 #!/bin/bash
 
 pid=$(lsof -i :80| awk '/python/ { pid=$2 } END { print pid }')
+currentDir=$(dirname "$PWD")
 
 # do a sudo check!
 if [ "$EUID" -ne 0 ]; then
@@ -22,4 +23,4 @@ fi
 
 echo "starting frame webserver!"
 
-sudo python src/webserver.py
+sudo python $currentDir/src/webserver.py

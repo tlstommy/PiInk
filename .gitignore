@@ -128,7 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-PiInk/img/*
+img/*
 !PiInk/redditImgs/.gitkeep
 PiInk/piink-log.txt
 piink-log.txt
+config/settings.json

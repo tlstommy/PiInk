@@ -25,7 +25,7 @@ GPIO.setup(BUTTONS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 #sudo killall python
 # Get the current path
-PATH = os.path.dirname(__file__)
+PATH = os.path.dirname(os.path.dirname(__file__))
 print(PATH)
 UPLOAD_FOLDER = os.path.join(PATH,"img")
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -150,7 +150,7 @@ def loadSettings():
     horizontalOrient = ""
     verticalOrient = ""
     try:
-        jsonFile = open("settings.json")
+        jsonFile = open("../config/settings.json")
     except:
         saveSettings("","checked",'aria-checked="false"')
         jsonFile = open("settings.json")
@@ -172,7 +172,7 @@ def saveSettings(orientationHorizontal,orientationVertical,adjustAR):
         "orientation":orientationSetting,
         "adjust_aspect_ratio":adjustAR,
     }
-    with open("settings.json", "w") as f:
+    with open("../config/settings.json", "w") as f:
         json.dump(jsonStr, f)
 
 def updateEink(filename,orientation,adjustAR):
@@ -224,7 +224,7 @@ def adjustAspectRatio(img,adjustARBool):
         img = img.resize(inky_display.resolution)
     return img
 def deleteImage():
-    os.system("sudo rm img/*")
+    os.system("sudo rm ../img/*")
 
 def rotateImage():
     
@@ -245,4 +245,5 @@ def uploaded_file(filename):
 for pin in BUTTONS:
         GPIO.add_event_detect(pin, GPIO.FALLING, handleButton, bouncetime=250)
 if __name__ == '__main__':
-   app.run(host="0.0.0.0",port=80)
+    app.secret_key = str(random.randint(100000,999999))
+    app.run(host="0.0.0.0",port=80)
