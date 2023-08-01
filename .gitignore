@@ -128,10 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-redPIDaccessFile.txt
 PiInk/img/*
 !PiInk/redditImgs/.gitkeep
-PiInk/redPIDaccessFile.txt
 PiInk/piink-log.txt
-secretsINFO.py
 piink-log.txt
