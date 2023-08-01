@@ -82,7 +82,6 @@ def upload_file():
     
 
     if request.method == 'POST':
-        
         print(request.form)
         
 
@@ -94,8 +93,8 @@ def upload_file():
                 deleteImage()
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
                 filename = os.path.join(app.config['UPLOAD_FOLDER'],filename)
+
                 #update the eink display
                 updateEink(filename,ORIENTATION,ADJUST_AR)
             else:
@@ -113,9 +112,6 @@ def upload_file():
                     flash("Error: Unsupported Media or Invalid Link!")
                     return render_template('main.html')
                     
-
-        
-       
         #other button funcs
         #reboot
         if request.form["submit"] == 'Reboot':
@@ -131,8 +127,6 @@ def upload_file():
         if request.form["submit"] == 'rotateImage':
             print("rotating image")
             rotateImage()
-
-
 
         #save frame settings
         if request.form["submit"] == 'Save Settings':
@@ -207,7 +201,6 @@ def changeOrientation(img,orientation):
 
 def adjustAspectRatio(img,adjustARBool):
     if adjustARBool:
-        #SO to stackoverflow for this one
         w = inky_display.width
         h = inky_display.height
         ratioWidth = w / img.width
@@ -238,10 +231,8 @@ def rotateImage():
 
     img = Image.open(os.path.join(PATH, "img/",os.listdir(app.config['UPLOAD_FOLDER'])[0]))
     
-    #rotate image 90 degrees
+    #rotate image 90 degrees and update
     img = img.rotate(90, Image.NEAREST,expand=1)
-
-
     img = img.save(os.path.join(PATH, "img/",os.listdir(app.config['UPLOAD_FOLDER'])[0]))
     updateEink(os.listdir(app.config['UPLOAD_FOLDER'])[0],ORIENTATION,ADJUST_AR)
 
@@ -254,5 +245,4 @@ def uploaded_file(filename):
 for pin in BUTTONS:
         GPIO.add_event_detect(pin, GPIO.FALLING, handleButton, bouncetime=250)
 if __name__ == '__main__':
-   app.secret_key = str(random.randint(100000,999999))
    app.run(host="0.0.0.0",port=80)

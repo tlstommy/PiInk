@@ -2,6 +2,12 @@
 
 pid=$(lsof -i :80| awk '/python/ { pid=$2 } END { print pid }')
 
+# do a sudo check!
+if [ "$EUID" -ne 0 ]; then
+  echo -e "\n[ERROR]: The PiInk start script requires root privileges. Please run it with sudo.\n"
+  exit 1
+fi
+
 if [[ -z $pid ]]; then
   echo "No process found using port 80!"
 else

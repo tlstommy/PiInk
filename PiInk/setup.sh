@@ -10,7 +10,6 @@ blink=$(tput blink)
 
 red=$(tput setaf 1)
 green=$(tput setaf 2)
-blue=$(tput setaf 4)
 yellow=$(tput setaf 3)
 
 enable_interfaces(){
@@ -74,30 +73,39 @@ print_error() {
   echo -e "${red}$1${normal}"
 }
 
+# better color vals than tput
 print_warn() {
-  echo -e "${yellow}$1${normal}"
+  echo -e "\e[38;2;255;255;0m$1\e[0m"
+
 }
 
-# Set the current directory
-currentDir=$(pwd)
-clear
-print_success "$(print_bold "PiInk has been successfully installed!\n")"
-print_bold "Next Steps:"
-echo "  [•] Ensure the $(print_bold "I2C") and $(print_bold "SPI") interfaces are turned on by using raspi-config."
-echo -e "  [•] Have an issue or suggestion? Visit the github repo @ /"/"."
+print_blue() {
+  echo -e "\e[38;2;65;105;225m$1\e[0m"
+}
 
-#exit
+
+# Set the current  and ip
+currentDir=$(pwd)
+ipAddress=$(hostname -I | cut -d ' ' -f 1)
+
+# do a sudo check!
+if [ "$EUID" -ne 0 ]; then
+  echo -e "\n[ERROR]: $(print_error "The PiInk installation script requires root privileges. Please run it with sudo.\n")"
+  exit 1
+fi
+
+clear
 
 while true; do
     clear
     print_header "Current Directory: $currentDir"
     print_bold "\nThis script will install all the required packages for PiInk!\n"
     print_underline "$(print_bold "It will do the following:\n")"
-    echo "[•] Set the hostname to 'PiInk'."
-    echo "[•] Setup bonjour."
-    echo "[•] Create a log file."
-    echo "[•] Update rc.local so that the Webserver starts on boot."
-    echo -e "[•] Install Required Python packages via pip.\n"
+    echo "   [•] Set the hostname to 'PiInk'."
+    echo "   [•] Setup bonjour."
+    echo "   [•] Create a log file."
+    echo "   [•] Update rc.local so that the Webserver starts on boot."
+    echo -e "   [•] Install Required Python packages via pip.\n"
 
     read -p "Would you like to proceed? [Y/n] " userInput
     userInput="${userInput^^}"
@@ -117,12 +125,12 @@ done
 
 enable_interfaces
 
-print_bold "Installing the Pimironi inky libraries."
+print_header  "Installing the Pimironi Inky libraries."
 sudo pip3 install inky[rpi,example-depends] > /dev/null &
 sudo pip3 install inky > /dev/null &
 show_loader "   Installing packages...    "
 #curl https://get.pimoroni.com/inky | bash
-#for ascii
+
 sudo apt-get install -y sysvbanner > /dev/null
 
 print_success "Installed!\n"
@@ -160,7 +168,7 @@ else
 fi
 
 # Install required pip packages
-print_bold "\nInstalling required packages with pip"
+print_header  "\nInstalling required packages with pip"
 sudo pip install -r requirements.txt > /dev/null &
 show_loader "   Installing packages...   "
 
@@ -170,4 +178,11 @@ sleep 1
 
 banner "PiInk"
 print_success "$(print_bold "PiInk has been successfully installed!")"
-print_warn "$(print_bold "Please reboot your pi using 'sudo reboot now'")"
+print_warn "$(print_bold "(Please reboot your Pi using 'sudo reboot now' to complete installation)")"
+print_bold "\nAfter your Pi is rebooted, you can access the web UI by going to $(print_blue "'piink.local'") or $(print_blue "'$ipAddress'") in your browser.\n"
+
+print_header "Helpful Info:"
+echo "  [•] A QR code of the PiInk's webUI can be brought up at any time by pressing the button labeled 'A' on the back of the PiInk display.\n"
+echo "  [•] Have an issue or suggestion? Please, submit it here!"
+echo -e "      https://github.com/tlstommy/PiInk/issues\n"
+
