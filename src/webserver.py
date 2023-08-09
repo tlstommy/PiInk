@@ -223,9 +223,14 @@ def adjustAspectRatio(img,adjustARBool):
     else:
         img = img.resize(inky_display.resolution)
     return img
-def deleteImage():
-    os.system("sudo rm ../img/*")
 
+def deleteImage():
+    img_directory = os.path.join(PATH, "img")
+    for filename in os.listdir(img_directory):
+        fp = os.path.join(img_directory, filename)
+        if os.path.isfile(fp):
+            os.remove(fp)
+            
 def rotateImage():
     
 
