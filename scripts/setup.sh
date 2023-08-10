@@ -196,7 +196,7 @@ userInput="${userInput^^}"
 if [[ $userInput == "Y" ]]; then
     print_success "You entered 'Y', Restarting now...\n"
     sleep 2
-    sudo restart now
+    sudo reboot now
 elif [[ $userInput == "N" ]]; then
     print_warn "Please restart your Raspberry Pi later to apply changes.\n"
     exit
