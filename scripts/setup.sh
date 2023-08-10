@@ -86,6 +86,7 @@ print_blue() {
 
 # Set the current  and ip
 currentDir=$(dirname "$PWD")
+currentWorkingDir=$(pwd)
 ipAddress=$(hostname -I | cut -d ' ' -f 1)
 
 # do a sudo check!
@@ -94,11 +95,14 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
+echo "$currentDir"
+echo "$currentWorkingDir"
+
 clear
 
 while true; do
     clear
-    print_header "Current Directory: $currentDir"
+    print_header "Current Directory: $currentWorkingDir"
     print_bold "\nThis script will install all the required packages for PiInk!\n"
     print_underline "$(print_bold "It will do the following:\n")"
     echo "   [•] Set the hostname to 'PiInk'."
@@ -169,20 +173,35 @@ fi
 
 # Install required pip packages
 print_header  "\nInstalling required packages with pip"
-sudo pip install -r ../config/requirements.txt > /dev/null &
+sudo pip install -r $currentWorkingDir/config/requirements.txt > /dev/null &
 show_loader "   Installing packages...   "
 
 print_success "Packages Installed!\n"
-sleep 1
-
-
+sleep 3
+clear
 banner "PiInk"
 print_success "$(print_bold "PiInk has been successfully installed!")"
-print_warn "$(print_bold "(Please reboot your Pi using 'sudo reboot now' to complete installation)")"
-print_bold "\nAfter your Pi is rebooted, you can access the web UI by going to $(print_blue "'piink.local'") or $(print_blue "'$ipAddress'") in your browser.\n"
 
 print_header "Helpful Info:"
 echo "  [•] A QR code of the PiInk's webUI can be brought up at any time by pressing the button labeled 'A' on the back of the PiInk display.\n"
 echo "  [•] Have an issue or suggestion? Please, submit it here!"
 echo -e "      https://github.com/tlstommy/PiInk/issues\n"
+
+
+print_warn "$(print_bold "(Please reboot your Raspberry Pi to complete installation)")"
+print_bold "After your Pi is rebooted, you can access the web UI by going to $(print_blue "'piink.local'") or $(print_blue "'$ipAddress'") in your browser.\n"
+read -p "Would you like to restart your Raspberry Pi now? [Y/n] " userInput
+userInput="${userInput^^}"
+
+if [[ $userInput == "Y" ]]; then
+    print_success "You entered 'Y', Restarting now...\n"
+    sleep 2
+    sudo restart now
+elif [[ $userInput == "N" ]]; then
+    print_warn "Please restart your Raspberry Pi later to apply changes.\n"
+    exit
+else
+    print_error "Unknown input, please restart later to apply changes.\n"
+    sleep 1
+fi
 

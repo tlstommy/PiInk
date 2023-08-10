@@ -17,13 +17,9 @@ ADJUST_AR = False
 
 #Set up RPi.GPIO
 GPIO.setmode(GPIO.BCM)
-
-
-
 GPIO.setup(BUTTONS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 
-#sudo killall python
 # Get the current path
 PATH = os.path.dirname(os.path.dirname(__file__))
 print(PATH)
@@ -103,6 +99,7 @@ def upload_file():
                 print(imageLink)
                 try:
                     filename = imageLink.replace(":","").replace("/","")
+                    filename = filename.split("?")[0]
                     print(filename)
                     #grab the url and download it to the folder
                     urllib.request.urlretrieve(imageLink, os.path.join(app.config['UPLOAD_FOLDER'], filename))
