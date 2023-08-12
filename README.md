@@ -1,4 +1,3 @@
-#
 
 <h1 align="center">PiInk - A Raspberry Pi Powered E-Ink Picture Frame </h1>
 
