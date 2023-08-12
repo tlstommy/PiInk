@@ -21,9 +21,11 @@ cd PiInk
 sudo bash install
 
 ```
-## Parts List and Assembly 
+## Parts List
 
-**The PiInk 3D printed mount was designed to work with a Raspberry Pi Zero but the software work with any Raspberry Pi model.**
+**The PiInk 3D printed mount was designed to work with the Raspberry Pi Zero family but the software should work with any Raspberry Pi model.**
+
+You can buy a Pi Zero from websites like [Adafruit](https://www.adafruit.com/category/105) or [Pimironi](https://shop.pimoroni.com/collections/raspberry-pi). 
 
 ### E-Ink Display
 
@@ -32,3 +34,27 @@ sudo bash install
 - **[Inky Impression - 4 Inches](https://shop.pimoroni.com/products/inky-impression-4)**
 - **[Inky Impression - 5.7 Inches](https://shop.pimoroni.com/products/inky-impression-5-7)**
 - **[Inky Impression - 7.3 Inches](https://shop.pimoroni.com/products/inky-impression-7-3)**
+
+The mounting hardware that comes included with the Inky Impression will be used to secure it to the 3D-printed stand.
+
+### 3D Printed Stand
+
+The [STL folder](https://github.com/tlstommy/PiInk/tree/main/STL) contains 3D printable stand files for the frame. These can also be found on [Printables.com]().
+
+There is a different stand for each size of E-Ink display, use the table below to find the appropriate one.
+
+| E-Ink Display | STL file|
+| ------------- |:-------------:|
+|Inky Impression - 4.0 Inches| [PiInk_stand_4_Inch.stl](https://github.com/tlstommy/PiInk/blob/main/STL/PiInk_stand_4_Inch.stl) |
+|Inky Impression - 5.7 Inches| [PiInk_stand_5.7_Inch.stl](https://github.com/tlstommy/PiInk/blob/main/STL/PiInk_stand_5.7_Inch.stl) |
+|Inky Impression - 7.3 Inches| [PiInk_stand_7.3_Inch.stl](https://github.com/tlstommy/PiInk/blob/main/STL/PiInk_stand_7.3_Inch.stl) |
+
+#### Recommended Printing Settings
+- 0.15mm
+- 10%-15% Infill
+- Baseplate Supports
+
+## Assembly
+
+
+
