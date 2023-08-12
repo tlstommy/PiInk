@@ -21,3 +21,14 @@ cd PiInk
 sudo bash install
 
 ```
+## Parts List and Assembly 
+
+**The PiInk 3D printed mount was designed to work with a Raspberry Pi Zero but the software work with any Raspberry Pi model.**
+
+### E-Ink Display
+
+**You will need one Pimironi Inky Impression. They come in 3 different sizes: 4". 5.7" & 7.3". You can purchase them at the links below.**
+
+- **[Inky Impression - 4 Inches](https://shop.pimoroni.com/products/inky-impression-4)**
+- **[Inky Impression - 5.7 Inches](https://shop.pimoroni.com/products/inky-impression-5-7)**
+- **[Inky Impression - 7.3 Inches](https://shop.pimoroni.com/products/inky-impression-7-3)**
