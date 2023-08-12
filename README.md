@@ -14,7 +14,7 @@
 
 ## Installation
 
-To install, clone the repository, run the install script, and follow the script's installation instructions.
+To install, clone the repository, run the install script, and follow the on-screen instructions:
 
 ```bash
 git clone https://github.com/tlstommy/PiInk.git
@@ -27,10 +27,8 @@ sudo bash install
 PiInk's 3D printed mount is tailored to fit the Raspberry Pi Zero family, but it's versatile enough to be used with any Raspberry Pi model. Here's what you'll need to build your own PiInk frame:
 
 - **Raspberry Pi**: Purchase a Pi Zero or other Raspberry Pi model from websites like [Adafruit](https://www.adafruit.com/category/105) or [Pimironi](https://shop.pimoroni.com/collections/raspberry-pi).
-- **E-Ink Display**: Specific details will follow in the next section.
+- **E-Ink Display**: Specific details are in the next section.
 - **3D-Printed Stand**: Required for mounting the E-Ink Display.
-
-The following sections will guide you in selecting the appropriate E-Ink display and the 3D-printed stand.
 
 ### E-Ink Display
 
