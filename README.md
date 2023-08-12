@@ -9,13 +9,15 @@
 - **Web Ui**: Built-in Web UI to control PiInk and upload images over the network.
 - **Low Power**: The E-Ink display does not require power to continually display images, allowing pictures on the frame to persist
 - **Natural Aesthetic**: The lack of a backlight and the nature of E-Ink technology allows images displayed on PiInk to resemble images printed on paper.
-- **Open Source**: 
+- **Open Source**: PiInk has a MIT License, so feel free to modify it however you want!
 
 ## Installation
 
-Describe the installation process. For example:
+To install, clone the repository, run the install script, and follow the script's installation instructions.
 
 ```bash
-git clone https://github.com/username/repo.git
-cd repo
-npm install
+git clone https://github.com/tlstommy/PiInk.git
+cd PiInk
+sudo bash install
+
+```
