@@ -1,5 +1,5 @@
 
-<h1 align="center">PiInk - A Raspberry Pi Powered E-Ink Picture Frame </h1>
+<h1 align="center">PiInk - A Raspberry Pi Powered E-Ink Picture Frame</h1>
 
 ![image](https://github.com/tlstommy/PiInk/assets/36305669/626a897f-e623-4cc2-a8d9-015e7bd3f8fa)
 
@@ -12,12 +12,13 @@
 - **Open Source**: PiInk is under the MIT License, so modify it as you see fit!
 
 # Table of Contents
+* [Overview](#piink---a-raspberry-pi-powered-e-ink-picture-frame)
 * [Installation](#installation)
 * [Parts List](#parts-list)
    * [E-Ink Display](#e-ink-display)
    * [3D Printed Stand](#3d-printed-stand)
    * [Recommended Printing Settings](#recommended-printing-settings)
-* [Frame Assembly](#assembly)
+* [Frame Assembly](#frame-assembly)
 
 
 
