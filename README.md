@@ -18,10 +18,8 @@
 * [Parts List](#parts-list)
    * [E-Ink Display](#e-ink-display)
    * [3D Printed Stand](#3d-printed-stand)
-   * [Recommended Printing Settings](#recommended-printing-settings)
 * [Frame Assembly](#frame-assembly)
-
-
+* [Issues & Suggestions](#issues--suggestions)
 
 
 # Installation
