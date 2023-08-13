@@ -87,6 +87,7 @@ print_blue() {
 # Set the current  and ip
 currentDir=$(dirname "$PWD")
 currentWorkingDir=$(pwd)
+currentFolder=${PWD##*/} 
 ipAddress=$(hostname -I | cut -d ' ' -f 1)
 
 # do a sudo check!
@@ -95,10 +96,11 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-echo "$currentDir"
-echo "$currentWorkingDir"
-
-clear
+if [ "$currentFolder" == "scripts" ]; then
+  cd ..
+  currentDir=$(pwd)
+  currentWorkingDir=$(pwd)
+fi
 
 while true; do
     clear

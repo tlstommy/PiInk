@@ -2,12 +2,19 @@
 
 pid=$(lsof -i :80| awk '/python/ { pid=$2 } END { print pid }')
 currentDir=$(pwd)
+currentFolder=${PWD##*/} 
 
 # do a sudo check!
 if [ "$EUID" -ne 0 ]; then
   echo -e "\n[ERROR]: The PiInk start script requires root privileges. Please run it with sudo.\n"
   exit 1
 fi
+
+if [ "$currentFolder" == "scripts" ]; then
+  cd ..
+  currentDir=$(pwd)
+fi
+
 
 if [[ -z $pid ]]; then
   echo "No process found using port 80!"
