@@ -96,13 +96,8 @@ Mounting the PiInk onto the PiInk stand is a straightforward process that can be
 ### Step 3: Route the Raspberry Pi power cable behind the PiInk stand.
 ![assembly step 3](https://github.com/tlstommy/PiInk/assets/36305669/d2324130-9911-4ee5-ac8c-276beeb2a951)
 
-
-
-
-
-
-
-
+# Issues & Suggestions
+If you encounter any issues or have any suggestions, please submit them through the [Github Issues](https://github.com/tlstommy/piink/issues) page. Your feedback is greatly appreciated!
 
 
 
