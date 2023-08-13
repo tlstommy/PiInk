@@ -11,6 +11,16 @@
 - **Natural Aesthetic**: No backlight and the unique E-Ink technology make images look as if they are printed onto paper.
 - **Open Source**: PiInk is under the MIT License, so modify it as you see fit!
 
+# Table of Contents
+* [Installation](#installation)
+* [Parts List](#parts-list)
+   * [E-Ink Display](#e-ink-display)
+   * [3D Printed Stand](#3d-printed-stand)
+   * [Recommended Printing Settings](#recommended-printing-settings)
+* [Assembly](#assembly)
+
+
+
 
 # Installation
 
@@ -58,6 +68,30 @@ The included mounting hardware is used to secure the Inky Impression to the 3D-p
 - Supports: Baseplate
 
 # Assembly
+
+Mounting the PiInk onto the PiInk stand is a straightforward process that can be completed in 3 simple steps.
+
+**You will need the following materials that are included with the Inky Impression:**
+- (2) Standoffs
+- (2) Screws
+  
+### Step 1: Attach the Pi Zero and install the standoffs to the lower mounting holes.
+![assembly step 1](https://github.com/tlstommy/PiInk/assets/36305669/8ba1b216-5b6a-4fad-ba75-36ca108940f8)
+
+### Step 2: Secure the stand onto standoffs using the screws. They will thread themselves.
+![assembly step 2](https://github.com/tlstommy/PiInk/assets/36305669/5afd5266-8ca0-43b3-a68c-68bada6ae897)
+
+### Step 3: Route the Raspberry Pi power cable behind the PiInk stand.
+![assembly step 3](https://github.com/tlstommy/PiInk/assets/36305669/d2324130-9911-4ee5-ac8c-276beeb2a951)
+
+
+
+
+
+
+
+
+
 
 
 
