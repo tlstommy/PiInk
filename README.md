@@ -54,7 +54,7 @@ PiInk's 3D printed mount is tailored to fit the Raspberry Pi Zero family, but it
 
 
 **PiInk uses a Pimironi Inky Impression E-Ink Display, available in 3 sizes: 4", 5.7", & 7.3" You can purchase one at the links below.**
-
+###### Note: Due to the nature of E-Ink displays, the larger the display the longer it takes to refresh an image. 
 - **[4 Inch Display](https://shop.pimoroni.com/products/inky-impression-4)**
 - **[5.7 Inch Display](https://shop.pimoroni.com/products/inky-impression-5-7)**
 - **[7.3 Inch Display](https://shop.pimoroni.com/products/inky-impression-7-3)**
