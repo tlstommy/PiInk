@@ -17,7 +17,7 @@
    * [E-Ink Display](#e-ink-display)
    * [3D Printed Stand](#3d-printed-stand)
    * [Recommended Printing Settings](#recommended-printing-settings)
-* [Assembly](#assembly)
+* [Frame Assembly](#assembly)
 
 
 
@@ -67,7 +67,7 @@ The included mounting hardware is used to secure the Inky Impression to the 3D-p
 - Infill: 10%-15%
 - Supports: Baseplate
 
-# Assembly
+# Frame Assembly
 
 Mounting the PiInk onto the PiInk stand is a straightforward process that can be completed in 3 simple steps.
 
