@@ -14,6 +14,7 @@
 # Table of Contents
 * [Overview](#piink---a-raspberry-pi-powered-e-ink-picture-frame)
 * [Installation](#installation)
+* [WebUI](#webui)
 * [Parts List](#parts-list)
    * [E-Ink Display](#e-ink-display)
    * [3D Printed Stand](#3d-printed-stand)
@@ -33,6 +34,16 @@ cd PiInk
 sudo bash install
 
 ```
+
+Upon reboot, the PiInk program should start and be accessible on the web at the Raspberry Pi's IP address or at `piink.local` 
+
+
+# WebUI
+
+
+
+
+
 # Parts List
 
 PiInk's 3D printed mount is tailored to fit the Raspberry Pi Zero family, but it's versatile enough to be used with any Raspberry Pi model. Here's what you'll need to build your own PiInk frame:
