@@ -11,7 +11,8 @@
 - **Natural Aesthetic**: No backlight and the unique E-Ink technology make images look as if they are printed onto paper.
 - **Open Source**: PiInk is under the MIT License, so modify it as you see fit!
 
-## Installation
+
+# Installation
 
 To install, clone the repository, run the install script, and follow the on-screen instructions:
 
@@ -21,7 +22,7 @@ cd PiInk
 sudo bash install
 
 ```
-## Parts List
+# Parts List
 
 PiInk's 3D printed mount is tailored to fit the Raspberry Pi Zero family, but it's versatile enough to be used with any Raspberry Pi model. Here's what you'll need to build your own PiInk frame:
 
@@ -56,7 +57,7 @@ The included mounting hardware is used to secure the Inky Impression to the 3D-p
 - Infill: 10%-15%
 - Supports: Baseplate
 
-## Assembly
+# Assembly
 
 
 
