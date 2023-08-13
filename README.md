@@ -38,9 +38,19 @@ Upon reboot, the PiInk program should start and be accessible on the web at the 
 
 # WebUI
 
+**The PiInk can be controlled via the WebUI which can be found at the Raspberry Pi's IP address or at `piink.local`**
 
+![image](https://github.com/tlstommy/PiInk/assets/36305669/e2e2549b-6bc0-4879-9c0d-e9283fa75e27)
 
+### Uploading an image
+The WebUI can be used to upload an image to the PiInk via a file upload or an image link.
 
+### Settings
+In the Frame Settings drop-down, you can set options for the PiInk such as orientation or automatically adjusting images to fit the frames aspect ratio. 
+
+If you click the power button in the top right you can reboot or shutdown the PiInk.
+
+**If you ever are unable to access the WebUI, press the `A` button on the back of the PiInk and an info screen will pop up.**
 
 # Parts List
 
