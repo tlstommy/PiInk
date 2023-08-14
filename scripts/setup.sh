@@ -131,7 +131,7 @@ done
 
 enable_interfaces
 
-print_header  "Installing the Pimironi Inky libraries."
+print_header  "Installing the Pimoroni Inky libraries."
 sudo pip3 install inky[rpi,example-depends] > /dev/null &
 sudo pip3 install inky > /dev/null &
 show_loader "   Installing packages...    "
@@ -185,7 +185,7 @@ banner "PiInk"
 print_success "$(print_bold "PiInk has been successfully installed!")"
 
 print_header "Helpful Info:"
-echo "  [•] A QR code of the PiInk's webUI can be brought up at any time by pressing the button labeled 'A' on the back of the PiInk display."
+echo "  [•] A QR code of the PiInk webUI can be brought up at any time by pressing the button labeled 'A' on the back of the PiInk display."
 echo "  [•] Have an issue or suggestion? Please, submit it here!"
 echo -e "      https://github.com/tlstommy/PiInk/issues\n"
 
