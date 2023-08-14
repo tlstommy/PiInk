@@ -33,14 +33,22 @@ sudo bash install
 
 ```
 
-Upon reboot, the PiInk program should start and be accessible on the web at the Raspberry Pi's IP address or at `piink.local` 
+Upon reboot, the PiInk program should start and be accessible on the web at the Raspberry Pi's IP address or at `piink.local`. 
 
 
 # WebUI
 
+**The PiInk can be controlled via the WebUI which can be found at the Raspberry Pi's IP address or at `piink.local`**
 
+![image](https://github.com/tlstommy/PiInk/assets/36305669/e2e2549b-6bc0-4879-9c0d-e9283fa75e27)
 
+### Uploading an image
+Use the WebUI to upload an image to the PiInk via a file upload or an image link.
 
+### Settings
+In Frame Settings, set options for the PiInk like orientation or automatic image adjustment. Reboot or shut down PiInk from the power button in the top right.
+
+**If you ever are unable to access the WebUI, press the `A` button on the back of the PiInk and an info screen will pop up.**
 
 # Parts List
 
@@ -54,7 +62,7 @@ PiInk's 3D printed mount is tailored to fit the Raspberry Pi Zero family, but it
 
 
 **PiInk uses a Pimironi Inky Impression E-Ink Display, available in 3 sizes: 4", 5.7", & 7.3" You can purchase one at the links below.**
-###### Note: Due to the nature of E-Ink displays, the larger the display the longer it takes to refresh an image. 
+###### Note: The larger the display, the longer it takes to refresh an image.
 - **[4 Inch Display](https://shop.pimoroni.com/products/inky-impression-4)**
 - **[5.7 Inch Display](https://shop.pimoroni.com/products/inky-impression-5-7)**
 - **[7.3 Inch Display](https://shop.pimoroni.com/products/inky-impression-7-3)**
@@ -63,7 +71,7 @@ The included mounting hardware is used to secure the Inky Impression to the 3D-p
 
 ### 3D Printed Stand
 
-3D printable stand files for the frame are available in the [STL folder](https://github.com/tlstommy/PiInk/tree/main/STL) or on [Printables.com](). Select the appropriate stand for your E-Ink display size from the table below:
+Find 3D printable stand files in the [STL folder](https://github.com/tlstommy/PiInk/tree/main/STL) or on [Printables.com](). Select the appropriate stand for your E-Ink display size from the table below:
 
 | E-Ink Display                  | STL file                                                                                           |
 | ------------------------------ |:--------------------------------------------------------------------------------------------------:|
