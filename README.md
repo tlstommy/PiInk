@@ -3,6 +3,7 @@
 
 ![image](https://github.com/tlstommy/PiInk/assets/36305669/626a897f-e623-4cc2-a8d9-015e7bd3f8fa)
 
+
 ### An open-source, low-power, digital picture frame that gives images a natural, paper-like, aesthetic.
 
 **Features:**
@@ -19,6 +20,7 @@
    * [E-Ink Display](#e-ink-display)
    * [3D Printed Stand](#3d-printed-stand)
 * [Frame Assembly](#frame-assembly)
+* [Demo](#demo)
 * [Issues & Suggestions](#issues--suggestions)
 
 
@@ -101,6 +103,15 @@ Mounting the PiInk onto the PiInk stand is a straightforward process that can be
 
 ### Step 3: Route the Raspberry Pi power cable behind the PiInk stand.
 ![assembly step 3](https://github.com/tlstommy/PiInk/assets/36305669/d2324130-9911-4ee5-ac8c-276beeb2a951)
+
+# Demo
+
+Here is a video showing the PiInk frame updating to a new image.
+
+[IMG_0512 (1).webm](https://github.com/tlstommy/PiInk/assets/36305669/8ea15c3a-578c-4197-86a0-3f3a37161f8d)
+
+
+
 
 # Issues & Suggestions
 If you encounter any issues or have any suggestions, please submit them through the [Github Issues](https://github.com/tlstommy/piink/issues) page. Your feedback is greatly appreciated!
