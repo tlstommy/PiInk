@@ -24,7 +24,7 @@ GPIO.setup(BUTTONS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 PATH = os.path.dirname(os.path.dirname(__file__))
 print(PATH)
 UPLOAD_FOLDER = os.path.join(PATH,"img")
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg','webp'}
 print(ALLOWED_EXTENSIONS)
 
 
