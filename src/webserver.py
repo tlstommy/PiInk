@@ -11,6 +11,11 @@ import RPi.GPIO as GPIO
 
 import generateInfo
 # Gpio button pins from top to bottom
+
+#5 == info
+#6 == rotate clockwise
+#16 == rotate counterclockwise
+
 BUTTONS = [5, 6, 16, 24]
 ORIENTATION = 0
 ADJUST_AR = False
@@ -46,13 +51,20 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #handles button presses
 def handleButton(pin):
-
     #top button
     if(pin == 5):
         print("top pressed")
         generateInfo.infoGen(inky_display.width,inky_display.height)
         #update the eink display
         updateEink("infoImage.png",0,"")
+    elif(pin == 6):
+        print("rotate clockwise pressed")
+        rotateImage(-90)
+    elif(pin == 16):
+        print("rotate counter clockwise pressed")
+        rotateImage(90)
+
+        
 
 
 #app.config['SERVER_NAME'] = "pi-ink.local:80"
@@ -120,10 +132,10 @@ def upload_file():
             print("shutdown")
             os.system("sudo shutdown")
 
-        #rotate
+        #rotate clockwise
         if request.form["submit"] == 'rotateImage':
             print("rotating image")
-            rotateImage()
+            rotateImage(-90)
 
         #save frame settings
         if request.form["submit"] == 'Save Settings':
@@ -184,9 +196,6 @@ def updateEink(filename,orientation,adjustAR):
     inky_display.set_image(img)
     inky_display.show()
 
-    #now that it has been shown delete the file
-    #os.remove(os.path.join(PATH, "img/",filename))
-
 def changeOrientation(img,orientation):
     # 0 = horizontal
     # 1 = portrait
@@ -228,13 +237,13 @@ def deleteImage():
         if os.path.isfile(fp):
             os.remove(fp)
             
-def rotateImage():
+def rotateImage(deg):
     
 
     img = Image.open(os.path.join(PATH, "img/",os.listdir(app.config['UPLOAD_FOLDER'])[0]))
     
-    #rotate image 90 degrees and update
-    img = img.rotate(90, Image.NEAREST,expand=1)
+    #rotate image by degrees and update
+    img = img.rotate(deg, Image.NEAREST,expand=1)
     img = img.save(os.path.join(PATH, "img/",os.listdir(app.config['UPLOAD_FOLDER'])[0]))
     updateEink(os.listdir(app.config['UPLOAD_FOLDER'])[0],ORIENTATION,ADJUST_AR)
 
