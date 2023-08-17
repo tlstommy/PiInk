@@ -186,15 +186,15 @@ def saveSettings(orientationHorizontal,orientationVertical,adjustAR):
 
 def updateEink(filename,orientation,adjustAR):
     
-    img = Image.open(os.path.join(PATH, "img/",filename))
+    with Image.open(os.path.join(PATH, "img/",filename)) as img:
 
-    #do image transforms 
-    img = changeOrientation(img,orientation)
-    img = adjustAspectRatio(img,adjustAR)    
+        #do image transforms 
+        img = changeOrientation(img,orientation)
+        img = adjustAspectRatio(img,adjustAR)    
 
-    # Display the image
-    inky_display.set_image(img)
-    inky_display.show()
+        # Display the image
+        inky_display.set_image(img)
+        inky_display.show()
 
 def changeOrientation(img,orientation):
     # 0 = horizontal
@@ -240,12 +240,11 @@ def deleteImage():
 def rotateImage(deg):
     
 
-    img = Image.open(os.path.join(PATH, "img/",os.listdir(app.config['UPLOAD_FOLDER'])[0]))
-    
-    #rotate image by degrees and update
-    img = img.rotate(deg, Image.NEAREST,expand=1)
-    img = img.save(os.path.join(PATH, "img/",os.listdir(app.config['UPLOAD_FOLDER'])[0]))
-    updateEink(os.listdir(app.config['UPLOAD_FOLDER'])[0],ORIENTATION,ADJUST_AR)
+    with Image.open(os.path.join(PATH, "img/",os.listdir(app.config['UPLOAD_FOLDER'])[0])) as img:
+        #rotate image by degrees and update
+        img = img.rotate(deg, Image.NEAREST,expand=1)
+        img = img.save(os.path.join(PATH, "img/",os.listdir(app.config['UPLOAD_FOLDER'])[0]))
+        updateEink(os.listdir(app.config['UPLOAD_FOLDER'])[0],ORIENTATION,ADJUST_AR)
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
