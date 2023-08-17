@@ -28,6 +28,6 @@ else
   fi
 fi
 
-echo "starting frame webserver!"
+echo "starting PiInk frame webserver!"
 
 sudo python $currentDir/src/webserver.py

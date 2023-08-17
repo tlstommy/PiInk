@@ -76,7 +76,7 @@ class infoGen:
         #details thing
         imageDraw.text((self.urlQR.pixel_size,self.urlQR.pixel_size+5),"[Details]",fill=(0,0,0),font=subTitleFont)
         
-        detailsText = f"PiInk is an E Ink based picture frame. The E Ink \nframe allows images to remain on the frame while \npower is shut off. The frame can be controlled \nby accessing the WebUI listed above via \nthe QR code or at {self.hostname}.local . "
+        detailsText = f"PiInk is an E Ink based picture frame. The E Ink \nframe allows images to remain on the frame while \npower is shut off. The PiInk can be controlled \nby accessing the WebUI listed above via \nthe QR code or at {self.hostname}.local . "
         imageDraw.text((15,self.urlQR.pixel_size+50),detailsText,fill=(0,0,0),font=font)
         self.deleteImage()
         print(self.urlQR.pixel_size)
