@@ -38,7 +38,7 @@ sudo bash install
 Upon reboot, the PiInk program should start and be accessible on the web at the Raspberry Pi's IP address or at `piink.local`. 
 
 
-# WebUI
+# WebUI & Frame Buttons
 
 **The PiInk can be controlled via the WebUI which can be found at the Raspberry Pi's IP address or at `piink.local`**
 
@@ -46,11 +46,21 @@ Upon reboot, the PiInk program should start and be accessible on the web at the 
 
 ### Uploading an image
 Use the WebUI to upload an image to the PiInk via a file upload or an image link.
+**If you ever are unable to access the WebUI, press the `A` button on the back of the PiInk and an info screen will pop up.**
 
 ### Settings
 In Frame Settings, set options for the PiInk like orientation or automatic image adjustment. Reboot or shut down PiInk from the power button in the top right.
 
-**If you ever are unable to access the WebUI, press the `A` button on the back of the PiInk and an info screen will pop up.**
+### Buttons
+Located on the backside of the PiInk Frame are four buttons: A, B, C, and D. Each of these buttons is designed to execute a specific operation on the frame. Refer to the table below for the function associated with each button:
+| Button | Function |
+| :---: |:---|
+| `A` | Display the PiInk info screen |
+| `B` | Rotate the current image clockwise|
+| `C` | Rotate the current image counterclockwise|
+| `D` | Currently unused|
+
+
 
 # Parts List
 
@@ -106,7 +116,7 @@ Mounting the PiInk onto the PiInk stand is a straightforward process that can be
 
 # Demo
 
-Here is a video showing the PiInk frame updating to a new image.
+**Here is a video showing the PiInk frame updating to a new image.**
 
 [IMG_0512 (1).webm](https://github.com/tlstommy/PiInk/assets/36305669/8ea15c3a-578c-4197-86a0-3f3a37161f8d)
 
