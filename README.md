@@ -42,7 +42,8 @@ Upon reboot, the PiInk program should start and be accessible on the web at the 
 
 **The PiInk can be controlled via the WebUI which can be found at the Raspberry Pi's IP address or at `piink.local`**
 
-![image](https://github.com/tlstommy/PiInk/assets/36305669/e2e2549b-6bc0-4879-9c0d-e9283fa75e27)
+![webui image](https://github.com/tlstommy/PiInk/assets/36305669/44bbe745-2080-4620-bb2e-e1234d281f32)
+
 
 ### Uploading an image
 Use the WebUI to upload an image to the PiInk via a file upload or an image link.
