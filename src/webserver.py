@@ -24,7 +24,6 @@ ADJUST_AR = False
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BUTTONS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-
 # Get the current path
 PATH = os.path.dirname(os.path.dirname(__file__))
 print(PATH)
@@ -32,19 +31,15 @@ UPLOAD_FOLDER = os.path.join(PATH,"img")
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg','webp'}
 print(ALLOWED_EXTENSIONS)
 
-
 # Check whether the specified path exists or not
 pathExist = os.path.exists(os.path.join(PATH,"img"))
 
 if(pathExist == False):
    os.makedirs(os.path.join(PATH,"img"))
 
-
-
 #setup eink display and border
 inky_display = auto(ask_user=True, verbose=True)
 inky_display.set_border(inky_display.BLACK)
-
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -64,10 +59,6 @@ def handleButton(pin):
         print("rotate counter clockwise pressed")
         rotateImage(90)
 
-        
-
-
-#app.config['SERVER_NAME'] = "pi-ink.local:80"
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -79,7 +70,6 @@ def upload_file():
 
     arSwitchCheck,horizontalOrientationRadioCheck,verticalOrientationRadioCheck = loadSettings()
 
-    #todo: read settings in from file each time its loaded
     if horizontalOrientationRadioCheck == "checked":
         ORIENTATION = 0
     else:
@@ -88,11 +78,9 @@ def upload_file():
     if arSwitchCheck == "checked":
         ADJUST_AR = True
     
-
     if request.method == 'POST':
-        print(request.form)
         
-
+        print(request.form)
         #upload via link
         if request.form["submit"] == "Upload Image":
             file = request.files['file']
@@ -239,7 +227,6 @@ def deleteImage():
             
 def rotateImage(deg):
     
-
     with Image.open(os.path.join(PATH, "img/",os.listdir(app.config['UPLOAD_FOLDER'])[0])) as img:
         #rotate image by degrees and update
         img = img.rotate(deg, Image.NEAREST,expand=1)
