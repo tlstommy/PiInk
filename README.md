@@ -117,7 +117,7 @@ Mounting the PiInk onto the PiInk stand is a straightforward process that can be
 
 # Demo
 
-**Here is a video showing the PiInk updating to a new image.**
+**Below is a video showing the PiInk updating to a new image.**
 
 [IMG_0512 (1).webm](https://github.com/tlstommy/PiInk/assets/36305669/8ea15c3a-578c-4197-86a0-3f3a37161f8d)
 
