@@ -30,7 +30,7 @@ To install, clone the repository, run the install script, and follow the on-scre
 ```bash
 git clone https://github.com/tlstommy/PiInk.git
 cd PiInk
-sudo bash install
+sudo bash install.sh
 
 ```
 
