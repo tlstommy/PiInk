@@ -1,6 +1,6 @@
 <h1 align="center">PiInk - A Raspberry Pi Powered E-Ink Picture Frame</h1>
 
-![image](https://github.com/tlstommy/PiInk/assets/36305669/626a897f-e623-4cc2-a8d9-015e7bd3f8fa)
+![all 3 piinks](https://github.com/tlstommy/PiInk/assets/36305669/9531da45-1ef7-40e7-9d1f-2fef53ca01f3)
 
 
 ### An open-source, low-power, digital picture frame that gives images a natural, paper-like, aesthetic.
@@ -41,7 +41,7 @@ Upon reboot, the PiInk program will start and be accessible on the web at the Ra
 
 **The PiInk can be controlled via the WebUI which can be found at the Raspberry Pi's IP address or at `piink.local`**
 
-![webui image](https://github.com/tlstommy/PiInk/assets/36305669/44bbe745-2080-4620-bb2e-e1234d281f32)
+![webui](https://github.com/tlstommy/PiInk/assets/36305669/26215ec5-999e-482c-944a-ea160f643bcf)
 
 
 ### Uploading an image
@@ -106,19 +106,19 @@ Mounting the PiInk onto the PiInk stand is a straightforward process that can be
 - (2) Screws
   
 ### Step 1: Attach the Pi Zero and install the standoffs to the lower mounting holes.
-![assembly step 1](https://github.com/tlstommy/PiInk/assets/36305669/8ba1b216-5b6a-4fad-ba75-36ca108940f8)
+![Assembly Step 1](https://github.com/tlstommy/PiInk/assets/36305669/aee84a70-efd5-4cc2-aec4-e3419f7ba9ac)
 
 ### Step 2: Secure the stand onto standoffs using the screws. They will thread themselves.
-![assembly step 2](https://github.com/tlstommy/PiInk/assets/36305669/5afd5266-8ca0-43b3-a68c-68bada6ae897)
+![Assembly Step 2](https://github.com/tlstommy/PiInk/assets/36305669/31585b41-ff0b-4884-9739-a2917a938b48)
 
 ### Step 3: Route the Raspberry Pi power cable behind the PiInk stand.
-![assembly step 3](https://github.com/tlstommy/PiInk/assets/36305669/d2324130-9911-4ee5-ac8c-276beeb2a951)
+![Assembly Step 3](https://github.com/tlstommy/PiInk/assets/36305669/84fbf238-1630-4371-92aa-cf4432f78f38)
 
 # Demo
 
 **Below is a video showing the PiInk updating to a new image.**
 
-[IMG_0512 (1).webm](https://github.com/tlstommy/PiInk/assets/36305669/8ea15c3a-578c-4197-86a0-3f3a37161f8d)
+[IMG_0512 (1).webm](https://github.com/tlstommy/PiInk/assets/36305669/4dda6b41-d10e-469c-a952-cf3f85b38dbc)
 
 
 
