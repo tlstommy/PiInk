@@ -1,4 +1,3 @@
-
 <h1 align="center">PiInk - A Raspberry Pi Powered E-Ink Picture Frame</h1>
 
 ![image](https://github.com/tlstommy/PiInk/assets/36305669/626a897f-e623-4cc2-a8d9-015e7bd3f8fa)
