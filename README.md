@@ -14,11 +14,11 @@
 # Table of Contents
 * [Overview](#piink---a-raspberry-pi-powered-e-ink-picture-frame)
 * [Installation](#installation)
-* [WebUI](#webui--piink-buttons)
+* [WebUI & PiInk Buttons](#webui--piink-buttons)
 * [Parts List](#parts-list)
    * [E-Ink Display](#e-ink-display)
    * [3D Printed Stand](#3d-printed-stand)
-* [Frame Assembly](#frame-assembly)
+* [Frame Assembly](#piink-frame-assembly)
 * [Demo](#demo)
 * [Issues & Suggestions](#issues--suggestions)
 
