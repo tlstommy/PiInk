@@ -161,13 +161,13 @@ show_loader "   [2/2] Installing netatalk.    "
 print_success "Bonjour set up!\n"
 
 # Create the log file
-touch "$(dirname "$PWD")/piink-log.txt"
+touch "$currentWorkingDir/piink-log.txt"
 
 # Update rc.local
 print_bold "Updating rc.local"
 sleep 1
 if grep -Fxq "exit 0" /etc/rc.local; then
-  sudo sed -i "/exit 0/i cd $currentDir && sudo bash $currentDir/scripts/start.sh > $(dirname "$PWD")/piink-log.txt 2>&1 &" /etc/rc.local
+  sudo sed -i "/exit 0/i cd $currentWorkingDir && sudo bash $currentWorkingDir/scripts/start.sh > $currentWorkingDir/piink-log.txt 2>&1 &" /etc/rc.local
   print_success "Added startup line to rc.local!"
 else
   print_error "ERROR: Unable to add to rc.local"
