@@ -6,7 +6,7 @@
 ### An open-source, low-power, digital picture frame that gives images a natural, paper-like, aesthetic.
 
 **Features:**
-- **Web Ui**: A built-in interface to control PiInk and upload images over the network.
+- **Web UI**: A built-in interface to control PiInk and upload images over the network.
 - **Low Power**: The E-Ink display only needs power to change images, allowing pictures to persist on the frame.
 - **Natural Aesthetic**: No backlight and the unique E-Ink technology make images look as if they are printed onto paper.
 - **Open Source**: PiInk is under the MIT License, so modify it as you see fit!
