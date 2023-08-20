@@ -84,7 +84,7 @@ The included mounting hardware is used to secure the Inky Impression to the 3D-p
 
 ### 3D Printed Stand
 
-Find 3D printable stand files in the [STL folder](https://github.com/tlstommy/PiInk/tree/main/STL) or on [Printables.com](). Select the appropriate stand for your E-Ink display size from the table below:
+Find 3D printable stand files in the [STL folder](https://github.com/tlstommy/PiInk/tree/main/STL) or on [Printables.com](https://www.printables.com/model/552238-piink-a-raspberry-pi-powered-e-ink-picture-frame). Select the appropriate stand for your E-Ink display size from the table below:
 
 | E-Ink Display                  | STL file                                                                                           |
 | ------------------------------ |:--------------------------------------------------------------------------------------------------:|
