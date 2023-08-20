@@ -50,7 +50,7 @@ Use the WebUI to upload an image to the PiInk via a file upload or an image link
 **If you ever are unable to access the WebUI, press the `A` button on the back of the PiInk and an info screen will pop up.**
 
 ### Settings
-In the PiInk Settings, set options for the PiInk like orientation or automatic image adjustment. Reboot or shut down PiInk from the power button in the top right.
+In the PiInk Settings, set options for the PiInk such as orientation or automatic image adjustment. Reboot or shut down PiInk from the power button in the top right.
 
 ### PiInk Buttons
 Located on the backside of the PiInk's display are four buttons: A, B, C, and D. Each of these buttons is designed to execute a specific operation on the PiInk. Refer to the table below for the function associated with each button:
@@ -67,7 +67,7 @@ Located on the backside of the PiInk's display are four buttons: A, B, C, and D.
 
 PiInk's 3D printed mount is tailored to fit the Raspberry Pi Zero family, but it's versatile enough to be used with any Raspberry Pi model. Here's what you'll need to build your own PiInk:
 
-- **Raspberry Pi**: Purchase a Pi Zero or other Raspberry Pi model from websites like [Adafruit](https://www.adafruit.com/category/105) or [Pimironi](https://shop.pimoroni.com/collections/raspberry-pi).
+- **Raspberry Pi**: Purchase a Pi Zero or other Raspberry Pi model from websites like [Adafruit](https://www.adafruit.com/category/105) or [Pimoroni](https://shop.pimoroni.com/collections/raspberry-pi).
 - **E-Ink Display**: Specific details are in the next section.
 - **3D-Printed Stand**: Required for mounting the E-Ink Display.
 
@@ -125,7 +125,7 @@ Mounting the PiInk onto the PiInk stand is a straightforward process that can be
 
 
 # Issues & Suggestions
-If you encounter any issues or have any suggestions, please submit them through the [Github Issues](https://github.com/tlstommy/piink/issues) page. Your feedback is greatly appreciated!
+If you encounter any issues or have any suggestions, please submit them through the [GitHub Issues](https://github.com/tlstommy/piink/issues) page. Your feedback is greatly appreciated!
 
 
 
