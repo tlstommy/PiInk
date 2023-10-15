@@ -184,6 +184,10 @@ def updateEink(filename,orientation,adjustAR):
         inky_display.set_image(img)
         inky_display.show()
 
+#clear the screen to prevent ghosting
+def clearScreen():
+    return
+
 def changeOrientation(img,orientation):
     # 0 = horizontal
     # 1 = portrait
