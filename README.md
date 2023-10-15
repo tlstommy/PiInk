@@ -41,7 +41,8 @@ Upon reboot, the PiInk program will start and be accessible on the web at the Ra
 
 **The PiInk can be controlled via the WebUI which can be found at the Raspberry Pi's IP address or at `piink.local`**
 
-![webui](https://github.com/tlstommy/PiInk/assets/36305669/26215ec5-999e-482c-944a-ea160f643bcf)
+![webui](https://github.com/tlstommy/PiInk/assets/36305669/e0531d93-8249-4087-9238-81d80839c5b8)
+
 
 
 ### Uploading an image
@@ -50,6 +51,8 @@ Use the WebUI to upload an image to the PiInk via a file upload or an image link
 
 ### Settings
 In the PiInk Settings, set options for the PiInk such as orientation or automatic image adjustment. Reboot or shut down PiInk from the power button in the top right.
+
+There is a button labeled `Clear Ghosting` that can be pressed to cause the display to "scrub" the image to fix image ghosting issues.
 
 ### PiInk Buttons
 Located on the backside of the PiInk's display are four buttons: A, B, C, and D. Each of these buttons is designed to execute a specific operation on the PiInk. Refer to the table below for the function associated with each button:

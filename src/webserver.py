@@ -8,7 +8,7 @@ from PIL import Image
 import json
 from inky.auto import auto
 import RPi.GPIO as GPIO
-
+from PIL import ImageDraw,Image 
 import generateInfo
 # Gpio button pins from top to bottom
 
@@ -125,6 +125,11 @@ def upload_file():
             print("rotating image")
             rotateImage(-90)
 
+        #ghosting clears
+        if request.form["submit"] == 'clearGhost':
+            print("ghosting clear call!")
+            clearScreen()
+
         #save frame settings
         if request.form["submit"] == 'Save Settings':
             if(request.form["frame_orientation"] == "Horizontal Orientation"):
@@ -173,7 +178,6 @@ def saveSettings(orientationHorizontal,orientationVertical,adjustAR):
         json.dump(jsonStr, f)
 
 def updateEink(filename,orientation,adjustAR):
-    
     with Image.open(os.path.join(PATH, "img/",filename)) as img:
 
         #do image transforms 
@@ -183,6 +187,17 @@ def updateEink(filename,orientation,adjustAR):
         # Display the image
         inky_display.set_image(img)
         inky_display.show()
+
+#clear the screen to prevent ghosting
+def clearScreen():
+    print("running ghost clear")
+    img = Image.new(mode="RGB", size=(inky_display.width, inky_display.height),color=(255,255,255))
+    clearImage = ImageDraw.Draw(img)
+    inky_display.set_image(img)
+    inky_display.show()
+    updateEink(os.listdir(app.config['UPLOAD_FOLDER'])[0],ORIENTATION,ADJUST_AR)
+
+
 
 def changeOrientation(img,orientation):
     # 0 = horizontal
