@@ -8,7 +8,7 @@ from PIL import Image
 import json
 from inky.auto import auto
 import RPi.GPIO as GPIO
-
+from PIL import ImageDraw,Image 
 import generateInfo
 # Gpio button pins from top to bottom
 
@@ -173,7 +173,7 @@ def saveSettings(orientationHorizontal,orientationVertical,adjustAR):
         json.dump(jsonStr, f)
 
 def updateEink(filename,orientation,adjustAR):
-    
+    #clearScreen()
     with Image.open(os.path.join(PATH, "img/",filename)) as img:
 
         #do image transforms 
@@ -186,7 +186,13 @@ def updateEink(filename,orientation,adjustAR):
 
 #clear the screen to prevent ghosting
 def clearScreen():
-    return
+    print("Clearing!")
+    img = Image.new(mode="RGB", size=(inky_display.width, inky_display.height),color=(255,255,255))
+    clearImage = ImageDraw.Draw(img)
+    inky_display.set_image(img)
+    inky_display.show()
+
+
 
 def changeOrientation(img,orientation):
     # 0 = horizontal
