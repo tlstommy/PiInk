@@ -65,7 +65,7 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
-    
+    print("req ",request.files)    
     ADJUST_AR = False
 
     arSwitchCheck,horizontalOrientationRadioCheck,verticalOrientationRadioCheck = loadSettings()
@@ -81,8 +81,8 @@ def upload_file():
     if request.method == 'POST':
         
         print(request.form)
-        #upload via link
-        if request.form["submit"] == "Upload Image":
+        #upload via link, add support in for api calls like cURL 'curl -X POST -F "file=@image.png" piink.local'
+        if 'file' in request.files or (request.form and request.form.get("submit") == "Upload Image"):
             file = request.files['file']
             print(file)
             if file and allowed_file(file.filename):
