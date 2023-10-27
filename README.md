@@ -52,7 +52,7 @@ Use the WebUI to upload an image to the PiInk via a file upload or an image link
 ### Uploading an image via cURL
 Images can be uploaded to the frame over the command line by using cURL.
 
-Here is an example command: `curl -X POST -F "file=@image.png" piink.local`
+Here is an example command: `curl -X POST -F file=@image.png piink.local`
 
 ### Settings
 In the PiInk Settings, set options for the PiInk such as orientation or automatic image adjustment. Reboot or shut down PiInk from the power button in the top right.
