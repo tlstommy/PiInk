@@ -80,7 +80,7 @@ def upload_file():
     
     if request.method == 'POST':
         
-        print(request.form)
+        #print(request.form)
         #upload via link, add support in for api calls like cURL 'curl -X POST -F "file=@image.png" piink.local'
         if 'file' in request.files or (request.form and request.form.get("submit") == "Upload Image"):
             file = request.files['file']
