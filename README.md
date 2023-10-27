@@ -49,6 +49,11 @@ Upon reboot, the PiInk program will start and be accessible on the web at the Ra
 Use the WebUI to upload an image to the PiInk via a file upload or an image link.
 **If you ever are unable to access the WebUI, press the `A` button on the back of the PiInk and an info screen will pop up.**
 
+### Uploading an image via cURL
+Images can be uploaded to the frame over the command line by using cURL.
+
+Here is an example command: `curl -X POST -F "file=@image.png" piink.local`
+
 ### Settings
 In the PiInk Settings, set options for the PiInk such as orientation or automatic image adjustment. Reboot or shut down PiInk from the power button in the top right.
 
@@ -62,7 +67,6 @@ Located on the backside of the PiInk's display are four buttons: A, B, C, and D.
 | `B` | Rotate the current image clockwise|
 | `C` | Rotate the current image counterclockwise|
 | `D` | Currently unused|
-
 
 
 # Parts List
