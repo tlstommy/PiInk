@@ -93,6 +93,8 @@ def upload_file():
 
                 #update the eink display
                 updateEink(filename,ORIENTATION,ADJUST_AR)
+                if(len(request.form) == 0):
+                    return "File uploaded successfully", 200
             else:
                 deleteImage()
                 imageLink = request.form.getlist("text")[0]
