@@ -96,6 +96,7 @@
         
         <!--single image mode-->
         <form method="post" enctype=multipart/form-data id="single-form">
+            <input type="hidden" name="form_type" value="single_file_form">
             <br>
             <div class="vh-1 d-flex justify-content-center align-items-center">
                 <div class="panel-body" style="border: 2px solid;border-radius: 15px;padding: 10px;">
@@ -208,6 +209,7 @@
 
         <!--album image mode-->
         <form method="post" enctype=multipart/form-data id="album-form">
+            <input type="hidden" name="form_type" value="album_file_form">
             <br>
             <div class="vh-1 d-flex justify-content-center align-items-center">
                 <div class="panel-body" style="border: 2px solid;border-radius: 15px;padding: 10px; ">
@@ -219,17 +221,18 @@
                     
                     <!-- uploaded files list -->
                     
-                    <div class="mb-3 d-flex justify-content-center" style="width: 85%; padding-left: 15%;">
+                    <div class="mb-3 d-flex justify-content-center" style="width: 100%;">
                         <h4>
                             <i class="bi bi-card-image"></i>
                             Uploaded Files
                         </h4>
                     </div>
-                    <div class="mb-3 d-flex justify-content-center" style="width: 85%; padding-left: 15%;">
-                        <ul id="fileList" class="list-group" style="border: 2px solid; border-radius: 15px;">
+                    <div class="mb-3 d-flex justify-content-center" style="width: 100%;">
+                        <ul id="fileList" class="list-group" style="width: 100%; border: 2px solid; border-radius: 15px;">
                             <!-- list of files will go here -->
                         </ul>
                     </div>
+                    
 
                     
                     
@@ -259,19 +262,29 @@
                     <script>
                         document.getElementById('fileUpload').addEventListener('change', function() {
                             var fileList = document.getElementById('fileList');
-                            fileList.innerHTML = ''; // Clear existing list
+                            fileList.innerHTML = ''; //clear file list
                     
-                            // Create list items for each file
+                            //array of each file items
                             Array.from(this.files).forEach(function(file, index) {
                                 var li = document.createElement('li');
                                 li.className = 'list-group-item d-flex justify-content-between align-items-center';
-                                li.textContent = file.name + " ";
+
+                                
+                                //get filename
+                                var fileNameSpan = document.createElement('span');
+
+                                fileNameSpan.className = 'file-name';
+                                fileNameSpan.textContent = file.name;
+                                li.appendChild(fileNameSpan);
                     
-                                // Delete button for each file
+                                //delete button for each file
                                 var delButton = document.createElement('button');
-                                delButton.className = 'btn btn-danger btn-sm';
-                                delButton.textContent = 'Delete';
+                                delButton.className = 'btn btn-danger btn-sm ml-auto';
+                                delButton.innerHTML = '<i class="bi bi-trash"></i>';
+                                delButton.setAttribute('aria-label', 'Delete ' + file.name);
+                                
                                 delButton.onclick = function() {
+
                                     // Remove this file from the list
                                     fileList.removeChild(li);
                                 };
@@ -281,6 +294,17 @@
                             });
                         });
                     </script>
+                    
+                    
+                    <style>
+                        .file-name {
+                            flex-grow: 1;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+                    </style>
+                    
 
                     <br>
                     <div class="accordion" id="settings-accordion">
@@ -451,13 +475,21 @@
                         delButton.className = 'btn btn-danger btn-sm';
                         delButton.textContent = 'Delete';
                         delButton.onclick = function() {
-                            fetch('/delete/' + file, { method: 'DELETE' })
-                                .then(response => response.json())
-                                .then(data => {
-                                    console.log(data);
-                                    loadFileList(); // Reload the file list
-                                });
+                            event.preventDefault();
+                            fetch('/file/delete', { 
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                },
+                                body: 'filename=' + encodeURIComponent(file)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log(data);
+                                loadFileList(); // Reload the file list
+                            });
                         };
+
                         li.appendChild(delButton);
                         fileList.appendChild(li);
                     });

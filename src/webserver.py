@@ -79,8 +79,17 @@ def upload_file():
         ADJUST_AR = True
     
     if request.method == 'POST':
+
+        #get the form type
+        formType = request.form.get('form_type')
+
+        print("debug: " + str(formType))
+
+        if formType == "album_file_form":
+            print("album") 
+            print(request.form)
         
-        #print(request.form)
+        
         #upload via link, add support in for api calls like cURL 'curl -X POST -F "file=@image.png" piink.local'
         if 'file' in request.files or (request.form and request.form.get("submit") == "Upload Image"):
             file = request.files['file']
@@ -95,7 +104,7 @@ def upload_file():
                 updateEink(filename,ORIENTATION,ADJUST_AR)
                 if(len(request.form) == 0):
                     return "File uploaded successfully", 200
-            else:
+            elif formType == 'single_file_form':
                 deleteImage()
                 imageLink = request.form.getlist("text")[0]
                 print(imageLink)
@@ -151,12 +160,34 @@ def upload_file():
     return render_template('main.html',horizontalOrientationRadioCheck = horizontalOrientationRadioCheck,verticalOrientationRadioCheck=verticalOrientationRadioCheck,arSwitchCheck=arSwitchCheck)
 
 
-#album stuff
+#album stuff-
+
+#file list
 @app.route('/files', methods=['GET'])
 def list_files():
     files = os.listdir(app.config['UPLOAD_FOLDER'])
     return jsonify(files)
 
+#file list
+@app.route('/files', methods=['GET'])
+def listFiles():
+    files = os.listdir(app.config['UPLOAD_FOLDER'])
+    return jsonify(files)
+
+@app.route('/file/delete', methods=['POST'])
+def deleteFilesFromAlbum():
+    print("Request to delete file received.")
+    filename = request.form['filename']
+    print("Filename to delete:", filename)
+
+    file_path = os.path.join(UPLOAD_FOLDER, filename)
+    print(file_path)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        return jsonify({"success": True})
+    else:
+        print("File not found:", file_path)
+        return jsonify({"error": "File not found"}), 404
 
 
 def loadSettings():
