@@ -80,21 +80,27 @@
     </div>
     {% endblock %}
     <h1 class="d-flex justify-content-center align-items-center"><u>Controls</u></h1>
+
     <!-- mode toggle switch -->
-    <div class="d-flex justify-content-center" style="padding-left: 10%;padding-right: 10%;">
-        <div class="form-check form-switch">
+    <div class="d-flex justify-content-center align-items-center" style="padding-left: 10%; padding-right: 10%;">
+        <span class="me-2">Single</span>
+        <div class="form-check form-switch m-0">
             <input class="form-check-input" type="checkbox" id="toggleSwitch">
-            <label class="form-check-label" for="toggleSwitch">Toggle Mode</label>
+            <label class="form-check-label" for="toggleSwitch"></label>
         </div>
+        <span class="ms-2">Album</span>
     </div>
+
   
     <div class="d-flex justify-content-center" style="padding-left: 10%;padding-right: 10%; padding-bottom: 10%;" id="controlDiv">   
-        <form method="post" enctype=multipart/form-data>
+        
+        <!--single image mode-->
+        <form method="post" enctype=multipart/form-data id="single-form">
             <br>
             <div class="vh-1 d-flex justify-content-center align-items-center">
                 <div class="panel-body" style="border: 2px solid;border-radius: 15px;padding: 10px;">
                     <h2 class="d-flex justify-content-center">
-                        Upload An Image
+                        Single Mode
                     </h2>
                     <br>
                     <div class="mb-3" style="width: 85%;padding-left: 15%;">
@@ -199,6 +205,158 @@
                 </div>
             </div>
         </form>
+
+        <!--album image mode-->
+        <form method="post" enctype=multipart/form-data id="album-form">
+            <br>
+            <div class="vh-1 d-flex justify-content-center align-items-center">
+                <div class="panel-body" style="border: 2px solid;border-radius: 15px;padding: 10px; ">
+                    
+                    <h2 class="d-flex justify-content-center">
+                        Album Mode
+                    </h2>
+                    <br>
+                    
+                    <!-- uploaded files list -->
+                    <div class="mb-3 d-flex justify-content-center"style="width: 85%;padding-left: 15%;">
+                        
+                        <h4>
+                            <i class="bi bi-card-image"></i>
+                            Uploaded Files
+                        </h4>
+                        <ul id="fileList" class="list-group border: 2px solid;border-radius: 15px;">
+                            <!-- Dynamically populated list of files will go here -->
+                        </ul>
+                    </div>
+                    
+                    
+                    
+                    <!-- File upload zone -->
+                    <div class="mb-3" style="width: 85%;padding-left: 15%;">
+                        <label for="fileUpload" class="form-label">
+                            <h4>
+                                <i class="bi bi-file-earmark-image-fill"></i>
+                                Upload Image Files
+                            </h4>
+                        </label>
+                        <input class="form-control" type="file" name="file" id="fileUpload" multiple>
+                    </div>
+                    <br>
+
+                    <!-- File upload button -->
+                    <div class="mb-3 d-flex justify-content-center">
+                        <button style="width: 80%;" id="uploadButton" type="submit" name="submit" value="Upload Image" class="btn btn-primary"> 
+                            <i class="bi bi-upload"></i>
+                            &nbsp;Upload Images To Album   
+                        </button>
+                    </div>
+
+                    
+
+                    <script>
+                        document.getElementById('fileUpload').addEventListener('change', function() {
+                            var fileList = document.getElementById('fileList');
+                            fileList.innerHTML = ''; // Clear existing list
+                    
+                            // Create list items for each file
+                            Array.from(this.files).forEach(function(file, index) {
+                                var li = document.createElement('li');
+                                li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                                li.textContent = file.name;
+                    
+                                // Delete button for each file
+                                var delButton = document.createElement('button');
+                                delButton.className = 'btn btn-danger btn-sm';
+                                delButton.textContent = 'Delete';
+                                delButton.onclick = function() {
+                                    // Remove this file from the list
+                                    fileList.removeChild(li);
+                                };
+                    
+                                li.appendChild(delButton);
+                                fileList.appendChild(li);
+                            });
+                        });
+                    </script>
+
+                    <br>
+                    <div class="accordion" id="settings-accordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="settingsAccordion" >
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="background-color: #FFFFFF;">
+                                    <b style="color:#000000">PiInk Settings</b>
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="settings-accordion" data-bs-parent="#settings-accordion">
+                                <div class="accordion-body">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <table class="table table-sm table-borderless" style="width: 100%;">
+                                                    <tr>
+                                                        <th>PiInk Orientation</th>
+                                                        <th>General</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <input class="form-check-input" type="radio" id="frame_orientation_vertical" name="frame_orientation" value="Vertical Orientation" {{ verticalOrientationRadioCheck }}>
+                                                            <label class="form-check-label" for="frame_orientation_vertical">
+                                                                Portrait
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="preserveARSwitch" name="adjust_ar" value="true" {{ arSwitchCheck }}>
+                                                                <label class="form-check-label" for="preserveARSwitch">Adjust Aspect Ratio</label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <input class="form-check-input" type="radio" id="frame_orientation_horizontal" name="frame_orientation" value="Horizontal Orientation" {{ horizontalOrientationRadioCheck }}>
+                                                            <label class="form-check-label" for="frame_orientation_horizontal">
+                                                                Landscape
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <button type="submit" name="submit" value="rotateImage" id="rotateButton" class="btn btn-primary" style="width: 100%;">
+                                                                    <i class="bi bi-arrow-clockwise"></i>
+                                                                    &nbsp;Rotate Image
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+
+                                                        <td>
+                                                            
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <button type="submit" name="submit" value="clearGhost" id="ghostButton" class="btn btn-primary" style="width: 100%;">
+                                                                    Clear Ghosting
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="mb-3 d-flex justify-content-center">
+                                        <input style="width: 80%;" type="submit" name="submit" value="Save Settings" class="btn btn-primary"></input>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
     </div>
     <form method="post" enctype=multipart/form-data>
         <div class="modal fade" id="powerModalCenter" tabindex="-1" role="dialog" aria-labelledby="powerModalCenterTitle" aria-hidden="true">
@@ -236,17 +394,74 @@
 
     <!-- control mdoe hiding switch-->
     <script>
-        document.getElementById('toggleSwitch').addEventListener('change', function() {
-            var controlDiv = document.getElementById('controlDiv');
-            if (this.checked) {
-                alert("1")
-                controlDiv.style.display = 'block';
+        function toggleControlDiv() {
+            var singleModeDiv = document.getElementById('single-form');
+            var albumModeDiv = document.getElementById('album-form');
+            var toggleSwitch = document.getElementById('toggleSwitch');
+            if (toggleSwitch.checked) {
+                singleModeDiv.style.display = 'none';
+                albumModeDiv.style.display = 'block';
             } else {
-                alert("2")
-                controlDiv.style.display = 'none';
+                albumModeDiv.style.display = 'none';
+                singleModeDiv.style.display = 'block';
             }
-        });
+        }
+    
+        // Set initial state on page load
+        document.addEventListener('DOMContentLoaded', toggleControlDiv);
+    
+        // Attach event listener to the toggle switch
+        document.getElementById('toggleSwitch').addEventListener('change', toggleControlDiv);
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFileList();
+
+            // Handle file upload
+            document.getElementById('uploadButton').addEventListener('click', function(event) {
+                event.preventDefault();
+                var formData = new FormData(document.getElementById('album-form'));
+                fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                }).then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    loadFileList(); // Reload the file list
+                });
+            });
+        });
+
+        function loadFileList() {
+            fetch('/files')
+                .then(response => response.json())
+                .then(files => {
+                    var fileList = document.getElementById('fileList');
+                    fileList.innerHTML = '';
+                    files.forEach(file => {
+                        var li = document.createElement('li');
+                        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                        li.textContent = file;
+
+                        var delButton = document.createElement('button');
+                        delButton.className = 'btn btn-danger btn-sm';
+                        delButton.textContent = 'Delete';
+                        delButton.onclick = function() {
+                            fetch('/delete/' + file, { method: 'DELETE' })
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log(data);
+                                    loadFileList(); // Reload the file list
+                                });
+                        };
+                        li.appendChild(delButton);
+                        fileList.appendChild(li);
+                    });
+                });
+        }
+    </script>
+
 </body>
 <script>
 
