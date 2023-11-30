@@ -80,6 +80,14 @@
     </div>
     {% endblock %}
     <h1 class="d-flex justify-content-center align-items-center"><u>Controls</u></h1>
+    <!-- mode toggle switch -->
+    <div class="d-flex justify-content-center" style="padding-left: 10%;padding-right: 10%;">
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="toggleSwitch">
+            <label class="form-check-label" for="toggleSwitch">Toggle Mode</label>
+        </div>
+    </div>
+  
     <div class="d-flex justify-content-center" style="padding-left: 10%;padding-right: 10%; padding-bottom: 10%;" id="controlDiv">   
         <form method="post" enctype=multipart/form-data>
             <br>
@@ -225,6 +233,20 @@
         </div>
     </from>
     <br><br><br><br>
+
+    <!-- control mdoe hiding switch-->
+    <script>
+        document.getElementById('toggleSwitch').addEventListener('change', function() {
+            var controlDiv = document.getElementById('controlDiv');
+            if (this.checked) {
+                alert("1")
+                controlDiv.style.display = 'block';
+            } else {
+                alert("2")
+                controlDiv.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 <script>
 
