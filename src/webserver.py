@@ -80,6 +80,7 @@ def upload_file():
     
     if request.method == 'POST':
         
+        
         print(request.form)
         #upload via link
         if request.form["submit"] == "Upload Image":
