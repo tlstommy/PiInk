@@ -1,6 +1,6 @@
 import urllib.request
 import os,random,time,signal
-from flask import Flask, flash, request, redirect, url_for,render_template
+from flask import Flask, flash, request, redirect, url_for,render_template,jsonify
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
 from datetime import datetime
@@ -149,6 +149,15 @@ def upload_file():
             saveSettings(horizontalOrientationRadioCheck,verticalOrientationRadioCheck,arSwitchCheck)
             return render_template('main.html',horizontalOrientationRadioCheck = horizontalOrientationRadioCheck,verticalOrientationRadioCheck=verticalOrientationRadioCheck,arSwitchCheck=arSwitchCheck)       
     return render_template('main.html',horizontalOrientationRadioCheck = horizontalOrientationRadioCheck,verticalOrientationRadioCheck=verticalOrientationRadioCheck,arSwitchCheck=arSwitchCheck)
+
+
+#album stuff
+@app.route('/files', methods=['GET'])
+def list_files():
+    files = os.listdir(app.config['UPLOAD_FOLDER'])
+    return jsonify(files)
+
+
 
 def loadSettings():
     horizontalOrient = ""
