@@ -129,6 +129,7 @@ dmypy.json
 .pyre/
 
 img/*
+album/*
 !PiInk/redditImgs/.gitkeep
 PiInk/piink-log.txt
 piink-log.txt

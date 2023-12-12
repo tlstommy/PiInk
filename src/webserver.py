@@ -28,6 +28,7 @@ GPIO.setup(BUTTONS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 PATH = os.path.dirname(os.path.dirname(__file__))
 print(PATH)
 UPLOAD_FOLDER = os.path.join(PATH,"img")
+ALBUM_FOLDER = os.path.join(PATH,"album")
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg','webp'}
 print(ALLOWED_EXTENSIONS)
 
@@ -43,6 +44,7 @@ inky_display.set_border(inky_display.BLACK)
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['ALBUM_FOLDER'] = ALBUM_FOLDER
 
 #handles button presses
 def handleButton(pin):
@@ -162,16 +164,11 @@ def upload_file():
 
 #album stuff-
 
-#file list
-@app.route('/files', methods=['GET'])
-def list_files():
-    files = os.listdir(app.config['UPLOAD_FOLDER'])
-    return jsonify(files)
 
 #file list
 @app.route('/files', methods=['GET'])
 def listFiles():
-    files = os.listdir(app.config['UPLOAD_FOLDER'])
+    files = os.listdir(app.config['ALBUM_FOLDER'])
     return jsonify(files)
 
 @app.route('/file/delete', methods=['POST'])
@@ -180,7 +177,7 @@ def deleteFilesFromAlbum():
     filename = request.form['filename']
     print("Filename to delete:", filename)
 
-    file_path = os.path.join(UPLOAD_FOLDER, filename)
+    file_path = os.path.join(ALBUM_FOLDER, filename)
     print(file_path)
     if os.path.exists(file_path):
         os.remove(file_path)
@@ -188,6 +185,26 @@ def deleteFilesFromAlbum():
     else:
         print("File not found:", file_path)
         return jsonify({"error": "File not found"}), 404
+
+#upload image to album
+@app.route('/upload', methods=['POST'])
+def uploadToAlbum():
+    print("Upload to album")
+    print("req ",request.files)    
+    files = request.files.getlist('file')
+    for file in files:
+        print(file)
+        if file and allowed_file(file.filename):
+            print("valid file")
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['ALBUM_FOLDER'], filename))
+            filename = os.path.join(app.config['ALBUM_FOLDER'],filename)
+        else:
+            print("invalid file")
+    return jsonify({"success": True})
+    
+   
+
 
 
 def loadSettings():
