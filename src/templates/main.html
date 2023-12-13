@@ -274,7 +274,11 @@
                                 var fileNameSpan = document.createElement('span');
 
                                 fileNameSpan.className = 'file-name';
-                                fileNameSpan.textContent = file.name;
+                                fileNameSpan.innerHTML = '';
+                                fileNameSpan.innerHTML = '';
+                                fileNameSpan.innerHTML = '';
+                                
+                                
                                 li.appendChild(fileNameSpan);
                     
                                 //delete button for each file
@@ -311,7 +315,7 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="settingsAccordion" >
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="background-color: #FFFFFF;">
-                                    <b style="color:#000000">PiInk Settings</b>
+                                    <b style="color:#000000">PiInk Album Settings</b>
                                 </button>
                             </h2>
                             <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="settings-accordion" data-bs-parent="#settings-accordion">
