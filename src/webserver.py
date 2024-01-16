@@ -15,6 +15,7 @@ import generateInfo
 #5 == info
 #6 == rotate clockwise
 #16 == rotate counterclockwise
+#24 == reboot
 
 BUTTONS = [5, 6, 16, 24]
 ORIENTATION = 0

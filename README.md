@@ -64,9 +64,9 @@ Located on the backside of the PiInk's display are four buttons: A, B, C, and D.
 | Button | Function |
 | :---: |:---|
 | `A` | Display the PiInk info screen |
-| `B` | Rotate the current image clockwise|
-| `C` | Rotate the current image counterclockwise|
-| `D` | Currently unused|
+| `B` | Rotate the current image clockwise |
+| `C` | Rotate the current image counterclockwise |
+| `D` | Reboot the PiInk |
 
 
 # Parts List
