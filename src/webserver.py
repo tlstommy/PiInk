@@ -48,16 +48,19 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def handleButton(pin):
     #top button
     if(pin == 5):
-        print("top pressed")
+        print("--A-- Pressed: Show PiInk info")
         generateInfo.infoGen(inky_display.width,inky_display.height)
         #update the eink display
         updateEink("infoImage.png",0,"")
     elif(pin == 6):
-        print("rotate clockwise pressed")
+        print("--B-- Pressed: Rotate image clockwise")
         rotateImage(-90)
     elif(pin == 16):
-        print("rotate counter clockwise pressed")
+        print("--C-- Pressed: Rotate image counter clockwise")
         rotateImage(90)
+    elif(pin == 24):
+        print("--D-- Pressed: Reboot the Pi")
+        os.system('sudo reboot')  
 
 def allowed_file(filename):
     return '.' in filename and \
