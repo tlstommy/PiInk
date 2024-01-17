@@ -70,7 +70,9 @@ def upload_file():
     print("req ",request.files)    
     ADJUST_AR = False
 
-    arSwitchCheck,horizontalOrientationRadioCheck,verticalOrientationRadioCheck = loadSettings()
+    arSwitchCheck,modeSwitchCheck,horizontalOrientationRadioCheck,verticalOrientationRadioCheck = loadSettings()
+
+    print("Frame Mode: ",modeSwitchCheck)
 
     if horizontalOrientationRadioCheck == "checked":
         ORIENTATION = 0
@@ -157,9 +159,37 @@ def upload_file():
             except:
                 arSwitchCheck = ""
                 pass
-            saveSettings(horizontalOrientationRadioCheck,verticalOrientationRadioCheck,arSwitchCheck)
-            return render_template('main.html',horizontalOrientationRadioCheck = horizontalOrientationRadioCheck,verticalOrientationRadioCheck=verticalOrientationRadioCheck,arSwitchCheck=arSwitchCheck)       
-    return render_template('main.html',horizontalOrientationRadioCheck = horizontalOrientationRadioCheck,verticalOrientationRadioCheck=verticalOrientationRadioCheck,arSwitchCheck=arSwitchCheck)
+            
+            try:
+                if request.form["mode_switch"] == "true":
+                    modeSwitchCheck = "checked"
+            except:
+                modeSwitchCheck = ""
+                pass
+
+            
+            saveSettings(horizontalOrientationRadioCheck,verticalOrientationRadioCheck,arSwitchCheck,modeSwitchCheck)
+            return render_template('main.html',horizontalOrientationRadioCheck = horizontalOrientationRadioCheck,verticalOrientationRadioCheck=verticalOrientationRadioCheck,arSwitchCheck=arSwitchCheck,modeSwitchCheck=modeSwitchCheck)       
+    return render_template('main.html',horizontalOrientationRadioCheck = horizontalOrientationRadioCheck,verticalOrientationRadioCheck=verticalOrientationRadioCheck,arSwitchCheck=arSwitchCheck,modeSwitchCheck=modeSwitchCheck)
+
+
+#mode setting route
+@app.route('/set_mode', methods=['POST'])
+def set_mode():
+    newMode = request.form.get('mode')
+    if newMode:
+        #Save the new mode
+        adjustAR, _, horizontalOrientationRadioCheck, verticalOrientationRadioCheck = loadSettings()
+        saveSettings(horizontalOrientationRadioCheck, verticalOrientationRadioCheck, adjustAR, newMode)
+        return jsonify({"success": True})
+    return jsonify({"error": "Invalid mode"}), 400
+
+#mode getting route
+@app.route('/get_mode', methods=['GET'])
+def get_mode():
+    _, modeSwitchCheck, _, _ = loadSettings()
+    return jsonify({"mode": modeSwitchCheck})
+
 
 
 #album stuff-
@@ -213,7 +243,7 @@ def loadSettings():
     try:
         jsonFile = open(os.path.join(PATH,"config/settings.json"))
     except:
-        saveSettings("","checked",'aria-checked="false"')
+        saveSettings("","checked",'aria-checked="false"',"")
         jsonFile = open(os.path.join(PATH,"config/settings.json"))
     settingsData = json.load(jsonFile)
     jsonFile.close()
@@ -223,13 +253,14 @@ def loadSettings():
     else:
         verticalOrient = "checked"
         horizontalOrient = ""
-    return settingsData.get("adjust_aspect_ratio"),horizontalOrient,verticalOrient
-def saveSettings(orientationHorizontal,orientationVertical,adjustAR):
+    return settingsData.get("adjust_aspect_ratio"),settingsData.get("frame_mode"),horizontalOrient,verticalOrient
+def saveSettings(orientationHorizontal,orientationVertical,adjustAR,frameMode):
     if orientationHorizontal == "checked":
         orientationSetting = "Horizontal"
     else:
         orientationSetting = "Vertical"
     jsonStr = {
+        "frame_mode":frameMode,
         "orientation":orientationSetting,
         "adjust_aspect_ratio":adjustAR,
     }

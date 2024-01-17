@@ -83,13 +83,50 @@
 
     <!-- mode toggle switch -->
     <div class="d-flex justify-content-center align-items-center" style="padding-left: 10%; padding-right: 10%;">
+        
         <span class="me-2">Single</span>
         <div class="form-check form-switch m-0">
-            <input class="form-check-input" type="checkbox" id="toggleSwitch">
+            <input class="form-check-input" type="checkbox" name="mode_switch" id="toggleSwitch" {{ modeSwitchCheck }}>
             <label class="form-check-label" for="toggleSwitch"></label>
         </div>
         <span class="ms-2">Album</span>
+        
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            //get the current mode from the server to display
+            fetch('/get_mode', {
+                method: 'GET'
+            })
+            .then(response => response.json())
+            .then(data => {
+                //update the toggle switch based on the mode
+                document.getElementById('toggleSwitch').checked = (data.mode === 'album');
+            })
+            .catch(error => {
+                console.error('Error fetching mode:', error);
+            });
+            document.getElementById('toggleSwitch').addEventListener('change', function() {
+                var mode = this.checked ? 'album' : 'single';
+                localStorage.setItem('mode', mode);
+                //set the current mode to the server on mode change
+                fetch('/set_mode', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'mode=' + mode
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Mode updated:', data);
+                });
+            });
+        });
+
+
+    </script>
 
   
     <div class="d-flex justify-content-center" style="padding-left: 10%;padding-right: 10%; padding-bottom: 10%;" id="controlDiv">   
