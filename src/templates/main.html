@@ -101,15 +101,19 @@
             })
             .then(response => response.json())
             .then(data => {
-                //update the toggle switch based on the mode
-                document.getElementById('toggleSwitch').checked = (data.mode === 'album');
+                //update the mode to album
+                var toggleSwitch = document.getElementById('toggleSwitch');
+                toggleSwitch.checked = (data.mode === 'album');
+                updateMode(toggleSwitch.checked);
             })
             .catch(error => {
                 console.error('Error fetching mode:', error);
             });
             document.getElementById('toggleSwitch').addEventListener('change', function() {
                 var mode = this.checked ? 'album' : 'single';
-                localStorage.setItem('mode', mode);
+                
+                updateMode(this.checked);
+
                 //set the current mode to the server on mode change
                 fetch('/set_mode', {
                     method: 'POST',
@@ -124,6 +128,19 @@
                 });
             });
         });
+
+        //change modes
+        function updateMode(isAlbumMode) {
+            var singleModeDiv = document.getElementById('single-form');
+            var albumModeDiv = document.getElementById('album-form');
+            if (isAlbumMode) {
+                singleModeDiv.style.display = 'none';
+                albumModeDiv.style.display = 'block';
+            } else {
+                singleModeDiv.style.display = 'block';
+                albumModeDiv.style.display = 'none';
+            }
+        }
 
 
     </script>
@@ -264,8 +281,8 @@
                             Uploaded Files
                         </h4>
                     </div>
-                    <div class="mb-3 d-flex justify-content-center" style="width: 100%;">
-                        <ul id="fileList" class="list-group" style="width: 100%; border: 2px solid; border-radius: 15px;">
+                    <div class="mb-3 mx-3 d-flex justify-content-center" style="width: 100%;">
+                        <ul id="fileList" class="list-group" style="width: 80%; border: 2px solid; border-radius: 15px;">
                             <!-- list of files will go here -->
                         </ul>
                     </div>
