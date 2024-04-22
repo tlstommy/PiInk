@@ -138,6 +138,7 @@ show_loader "   Installing packages...    "
 #curl https://get.pimoroni.com/inky | bash
 
 sudo apt-get install -y sysvbanner > /dev/null
+sudo apt-get install -y fonts-freefont-ttf >/dev/null
 
 print_success "Installed!\n"
 
