@@ -118,6 +118,9 @@ while true; do
     read -p "Would you like to proceed? [Y/n] " userInput
     userInput="${userInput^^}"
 
+    if [[ -z $userInput ]]; then
+      userInput="Y"
+
     if [[ $userInput == "Y" ]]; then
         print_success "You entered 'Y'. Proceeding with the installation.\n"
         sleep 2
@@ -197,6 +200,9 @@ print_warn "$(print_bold "(Please reboot your Raspberry Pi to complete installat
 print_bold "After your Pi is rebooted, you can access the web UI by going to $(print_blue "'piink.local'") or $(print_blue "'$ipAddress'") in your browser.\n"
 read -p "Would you like to restart your Raspberry Pi now? [Y/n] " userInput
 userInput="${userInput^^}"
+
+if [[ -z $userInput ]]; then
+  userInput="Y"
 
 if [[ $userInput == "Y" ]]; then
     print_success "You entered 'Y', Restarting now...\n"
