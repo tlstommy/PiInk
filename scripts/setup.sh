@@ -147,8 +147,8 @@ print_success "Installed!\n"
 sleep 1
 #set the hostname
 print_bold "Setting hostname"
-sudo bash -c 'echo "piink" > "/etc/hostname"'
-sudo sed -i 's/127.0.0.1\s*localhost/127.0.0.1 piink/' /etc/hosts
+# sudo bash -c 'echo "piink" > "/etc/hostname"'
+# sudo sed -i 's/127.0.0.1\s*localhost/127.0.0.1 piink/' /etc/hosts
 print_success "Hostname set to piink!"
 echo -e "(This can be changed using raspi-config.) \n"
 
@@ -167,14 +167,29 @@ print_success "Bonjour set up!\n"
 touch "$currentWorkingDir/piink-log.txt"
 
 # Update rc.local
-print_bold "Updating rc.local"
-sleep 1
-if grep -Fxq "exit 0" /etc/rc.local; then
-  sudo sed -i "/exit 0/i cd $currentWorkingDir && sudo bash $currentWorkingDir/scripts/start.sh > $currentWorkingDir/piink-log.txt 2>&1 &" /etc/rc.local
-  print_success "Added startup line to rc.local!"
-else
-  print_error "ERROR: Unable to add to rc.local"
-fi
+# print_bold "Updating rc.local"
+# sleep 1
+# if grep -Fxq "exit 0" /etc/rc.local; then
+#   sudo sed -i "/exit 0/i cd $currentWorkingDir && sudo bash $currentWorkingDir/scripts/start.sh > $currentWorkingDir/piink-log.txt 2>&1 &" /etc/rc.local
+#   print_success "Added startup line to rc.local!"
+# else
+#   print_error "ERROR: Unable to add to rc.local"
+# fi
+
+# Remove script from rc.local if it exists
+sudo sed -i "/piink/d" /etc/rc.local
+
+# Remove old service file if it exists
+sudo rm -f /etc/systemd/system/piink.service
+
+# Create a new service file
+echo "s|%WORKING_DIR%|${currentWorkingDir}|g"
+sudo sed -e "s|%WORKING_DIR%|${currentWorkingDir}|g" ${currentWorkingDir}/config/piink.service > /etc/systemd/system/piink.service
+
+# Enable the service
+sudo systemctl daemon-reload
+sudo systemctl enable piink.service
+
 
 # Install required pip packages
 print_header  "\nInstalling required packages with pip"
