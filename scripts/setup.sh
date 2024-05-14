@@ -112,7 +112,7 @@ while true; do
     echo "   [•] Set the hostname to 'PiInk'."
     echo "   [•] Setup bonjour."
     echo "   [•] Create a log file."
-    echo "   [•] Update rc.local so that the Webserver starts on boot."
+    echo "   [•] Create a systemd service so that the Webserver starts on boot."
     echo -e "   [•] Install Required Python packages via pip.\n"
 
     read -p "Would you like to proceed? [Y/n] " userInput
@@ -166,29 +166,26 @@ print_success "Bonjour set up!\n"
 # Create the log file
 touch "$currentWorkingDir/piink-log.txt"
 
-# Update rc.local
-# print_bold "Updating rc.local"
-# sleep 1
-# if grep -Fxq "exit 0" /etc/rc.local; then
-#   sudo sed -i "/exit 0/i cd $currentWorkingDir && sudo bash $currentWorkingDir/scripts/start.sh > $currentWorkingDir/piink-log.txt 2>&1 &" /etc/rc.local
-#   print_success "Added startup line to rc.local!"
-# else
-#   print_error "ERROR: Unable to add to rc.local"
-# fi
-
-# Remove script from rc.local if it exists
+# Create the PiInk service
+print_header "Creating PiInk service"
+sleep 1
+# Remove script from rc.local if it still exists from an old installation
 sudo sed -i "/piink/d" /etc/rc.local
-
-# Remove old service file if it exists
-sudo rm -f /etc/systemd/system/piink.service
-
-# Create a new service file
-echo "s|%WORKING_DIR%|${currentWorkingDir}|g"
+if [ -f "/etc/systemd/system/piink.service" ]; then
+    sudo systemctl stop piink > /dev/null 2>&1 &
+    sudo systemctl disable piink > /dev/null 2>&1 &
+    sudo rm -f /etc/systemd/system/piink.service
+    sudo systemctl daemon-reload > /dev/null 2>&1 &
+    show_loader "   Found old service, removing...   "
+    sleep 1
+fi
+# Create and enable new service
 sudo sed -e "s|%WORKING_DIR%|${currentWorkingDir}|g" ${currentWorkingDir}/config/piink.service > /etc/systemd/system/piink.service
+sudo systemctl daemon-reload > /dev/null 2>&1 &
+sudo systemctl enable piink > /dev/null 2>&1 &
+show_loader "   Creating new service...          "
 
-# Enable the service
-sudo systemctl daemon-reload
-sudo systemctl enable piink.service
+print_success "Service created!"
 
 
 # Install required pip packages
