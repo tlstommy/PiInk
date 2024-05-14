@@ -147,8 +147,8 @@ print_success "Installed!\n"
 sleep 1
 #set the hostname
 print_bold "Setting hostname"
-# sudo bash -c 'echo "piink" > "/etc/hostname"'
-# sudo sed -i 's/127.0.0.1\s*localhost/127.0.0.1 piink/' /etc/hosts
+sudo bash -c 'echo "piink" > "/etc/hostname"'
+sudo sed -i 's/127.0.0.1\s*localhost/127.0.0.1 piink/' /etc/hosts
 print_success "Hostname set to piink!"
 echo -e "(This can be changed using raspi-config.) \n"
 
@@ -162,9 +162,6 @@ sudo apt-get install -y netatalk > /dev/null &
 show_loader "   [2/2] Installing netatalk.    "
 
 print_success "Bonjour set up!\n"
-
-# Create the log file
-touch "$currentWorkingDir/piink-log.txt"
 
 # Create the PiInk service
 print_header "Creating PiInk service"
