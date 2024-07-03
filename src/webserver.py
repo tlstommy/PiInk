@@ -10,6 +10,10 @@ from inky.auto import auto
 import RPi.GPIO as GPIO
 from PIL import ImageDraw,Image 
 import generateInfo
+
+import threading
+
+import sched
 # Gpio button pins from top to bottom
 
 #5 == info
@@ -19,6 +23,7 @@ import generateInfo
 BUTTONS = [5, 6, 16, 24]
 ORIENTATION = 0
 ADJUST_AR = False
+CURRENT_MODE = "SINGLE"
 
 #Set up RPi.GPIO
 GPIO.setmode(GPIO.BCM)
@@ -46,6 +51,10 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['ALBUM_FOLDER'] = ALBUM_FOLDER
 
+
+
+
+
 #handles button presses
 def handleButton(pin):
     #top button
@@ -53,7 +62,7 @@ def handleButton(pin):
         print("top pressed")
         generateInfo.infoGen(inky_display.width,inky_display.height)
         #update the eink display
-        updateEink("infoImage.png",0,"")
+        updateEink("infoImage.png",0,"", "img/")
     elif(pin == 6):
         print("rotate clockwise pressed")
         rotateImage(-90)
@@ -74,6 +83,8 @@ def upload_file():
 
     print("Frame Mode: ",modeSwitchCheck)
 
+
+
     if horizontalOrientationRadioCheck == "checked":
         ORIENTATION = 0
     else:
@@ -88,6 +99,7 @@ def upload_file():
         formType = request.form.get('form_type')
 
         print("debug: " + str(formType))
+        print(request.form)
 
         if formType == "album_file_form":
             print("album") 
@@ -106,7 +118,7 @@ def upload_file():
                 filename = os.path.join(app.config['UPLOAD_FOLDER'],filename)
 
                 #update the eink display
-                updateEink(filename,ORIENTATION,ADJUST_AR)
+                updateEink(filename,ORIENTATION,ADJUST_AR, "img/")
                 if(len(request.form) == 0):
                     return "File uploaded successfully", 200
             elif formType == 'single_file_form':
@@ -119,12 +131,14 @@ def upload_file():
                     print(filename)
                     #grab the url and download it to the folder
                     urllib.request.urlretrieve(imageLink, os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    updateEink(filename,ORIENTATION,ADJUST_AR)
+                    updateEink(filename,ORIENTATION,ADJUST_AR, "img/")
                 except:
                     #flash error message
                     flash("Error: Unsupported Media or Invalid Link!")
                     return render_template('main.html')
-                    
+
+        
+
         #other button funcs
         #reboot
         if request.form["submit"] == 'Reboot':
@@ -148,8 +162,9 @@ def upload_file():
 
         #save frame settings
         if request.form["submit"] == 'Save Settings':
+            print("glep")
             print(request.form)
-            print(request.form["album_interval"])
+            
             if(request.form["frame_orientation"] == "Horizontal Orientation"):
                 horizontalOrientationRadioCheck = "checked"
                 verticalOrientationRadioCheck = ""
@@ -163,12 +178,7 @@ def upload_file():
                 arSwitchCheck = ""
                 pass
             
-            try:
-                if request.form["mode_switch"] == "true":
-                    modeSwitchCheck = "checked"
-            except:
-                modeSwitchCheck = ""
-                pass
+            
             try:
                 if request.form["album_interval"] != "":
                     albumSwitchInterval = int(request.form["album_interval"])
@@ -180,7 +190,7 @@ def upload_file():
             except:
                 pass
 
-            
+            print("call save settings!")
             saveSettings(horizontalOrientationRadioCheck,verticalOrientationRadioCheck,arSwitchCheck,modeSwitchCheck,albumSwitchInterval)
             return render_template('main.html',horizontalOrientationRadioCheck = horizontalOrientationRadioCheck,verticalOrientationRadioCheck=verticalOrientationRadioCheck,arSwitchCheck=arSwitchCheck,modeSwitchCheck=modeSwitchCheck,photoSwitchInterval=albumSwitchInterval)       
     return render_template('main.html',horizontalOrientationRadioCheck = horizontalOrientationRadioCheck,verticalOrientationRadioCheck=verticalOrientationRadioCheck,arSwitchCheck=arSwitchCheck,modeSwitchCheck=modeSwitchCheck,photoSwitchInterval=albumSwitchInterval)
@@ -190,7 +200,14 @@ def upload_file():
 #mode setting route
 @app.route('/set_mode', methods=['POST'])
 def set_mode():
+    global CURRENT_MODE
     newMode = request.form.get('mode')
+    print("SEtmode newmode: ",newMode)
+    if newMode == "album":
+        CURRENT_MODE = "SHUFFLE"
+        threading.Thread(target=album_mode, daemon=True).start()
+    else:
+        CURRENT_MODE = "SINGLE"
     if newMode:
         #Save the new mode
         adjustAR, _, horizontalOrientationRadioCheck, verticalOrientationRadioCheck,photoSwitchInterval = loadSettings()
@@ -272,6 +289,7 @@ def loadSettings():
         horizontalOrient = ""
     return settingsData.get("adjust_aspect_ratio"),settingsData.get("frame_mode"),horizontalOrient,verticalOrient,settingsData.get("photo_interval")
 def saveSettings(orientationHorizontal,orientationVertical,adjustAR,frameMode,photo_interval):
+    print("1212: ",frameMode)
     if orientationHorizontal == "checked":
         orientationSetting = "Horizontal"
     else:
@@ -285,8 +303,8 @@ def saveSettings(orientationHorizontal,orientationVertical,adjustAR,frameMode,ph
     with open(os.path.join(PATH,"config/settings.json"), "w") as f:
         json.dump(jsonStr, f)
 
-def updateEink(filename,orientation,adjustAR):
-    with Image.open(os.path.join(PATH, "img/",filename)) as img:
+def updateEink(filename,orientation,adjustAR,folderName):
+    with Image.open(os.path.join(PATH, folderName,filename)) as img:
 
         #do image transforms 
         img = changeOrientation(img,orientation)
@@ -303,7 +321,7 @@ def clearScreen():
     clearImage = ImageDraw.Draw(img)
     inky_display.set_image(img)
     inky_display.show()
-    updateEink(os.listdir(app.config['UPLOAD_FOLDER'])[0],ORIENTATION,ADJUST_AR)
+    updateEink(os.listdir(app.config['UPLOAD_FOLDER'])[0],ORIENTATION,ADJUST_AR, "img/")
 
 
 
@@ -354,11 +372,30 @@ def rotateImage(deg):
         #rotate image by degrees and update
         img = img.rotate(deg, Image.NEAREST,expand=1)
         img = img.save(os.path.join(PATH, "img/",os.listdir(app.config['UPLOAD_FOLDER'])[0]))
-        updateEink(os.listdir(app.config['UPLOAD_FOLDER'])[0],ORIENTATION,ADJUST_AR)
+        updateEink(os.listdir(app.config['UPLOAD_FOLDER'])[0],ORIENTATION,ADJUST_AR, "img/")
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],filename)
+
+def album_mode():
+    while CURRENT_MODE == "SHUFFLE":
+        files = os.listdir(ALBUM_FOLDER)
+        print("loading new picture..")
+        if files:
+            random_file = random.choice(files)
+            updateEink(random_file, ORIENTATION, ADJUST_AR,"album/")
+        time.sleep(loadSettings()[4] * 60)  # Interval in minutes
+
+
+_,currentMode,_,_,_ = loadSettings()
+    
+print("Frame Mode -master: ",currentMode)
+
+if currentMode == "album":
+    CURRENT_MODE = "SHUFFLE"
+else:
+    CURRENT_MODE = "SINGLE"
 
 
 #run button checks on gpio    
@@ -366,4 +403,5 @@ for pin in BUTTONS:
         GPIO.add_event_detect(pin, GPIO.FALLING, handleButton, bouncetime=250)
 if __name__ == '__main__':
     app.secret_key = str(random.randint(100000,999999))
+    threading.Thread(target=album_mode, daemon=True).start()
     app.run(host="0.0.0.0",port=80)
