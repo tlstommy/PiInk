@@ -70,7 +70,7 @@ def upload_file():
     print("req ",request.files)    
     ADJUST_AR = False
 
-    arSwitchCheck,modeSwitchCheck,horizontalOrientationRadioCheck,verticalOrientationRadioCheck = loadSettings()
+    arSwitchCheck,modeSwitchCheck,horizontalOrientationRadioCheck,verticalOrientationRadioCheck,albumSwitchInterval = loadSettings()
 
     print("Frame Mode: ",modeSwitchCheck)
 
@@ -93,11 +93,12 @@ def upload_file():
             print("album") 
             print(request.form)
         
-        
+        #todo make a better curl call
         #upload via link, add support in for api calls like cURL 'curl -X POST -F "file=@image.png" piink.local'
-        if 'file' in request.files or (request.form and request.form.get("submit") == "Upload Image"):
+        if request.form and request.form.get("submit") == "Upload Image":
             file = request.files['file']
             print(file)
+            print("req form: ", request.form)
             if file and allowed_file(file.filename):
                 deleteImage()
                 filename = secure_filename(file.filename)
@@ -147,6 +148,8 @@ def upload_file():
 
         #save frame settings
         if request.form["submit"] == 'Save Settings':
+            print(request.form)
+            print(request.form["album_interval"])
             if(request.form["frame_orientation"] == "Horizontal Orientation"):
                 horizontalOrientationRadioCheck = "checked"
                 verticalOrientationRadioCheck = ""
@@ -166,11 +169,22 @@ def upload_file():
             except:
                 modeSwitchCheck = ""
                 pass
+            try:
+                if request.form["album_interval"] != "":
+                    albumSwitchInterval = int(request.form["album_interval"])
+                    print("psi set")
+                else:
+                    print("psi default set")
+                    albumSwitchInterval = 30
+                    
+            except:
+                pass
 
             
-            saveSettings(horizontalOrientationRadioCheck,verticalOrientationRadioCheck,arSwitchCheck,modeSwitchCheck)
-            return render_template('main.html',horizontalOrientationRadioCheck = horizontalOrientationRadioCheck,verticalOrientationRadioCheck=verticalOrientationRadioCheck,arSwitchCheck=arSwitchCheck,modeSwitchCheck=modeSwitchCheck)       
-    return render_template('main.html',horizontalOrientationRadioCheck = horizontalOrientationRadioCheck,verticalOrientationRadioCheck=verticalOrientationRadioCheck,arSwitchCheck=arSwitchCheck,modeSwitchCheck=modeSwitchCheck)
+            saveSettings(horizontalOrientationRadioCheck,verticalOrientationRadioCheck,arSwitchCheck,modeSwitchCheck,albumSwitchInterval)
+            return render_template('main.html',horizontalOrientationRadioCheck = horizontalOrientationRadioCheck,verticalOrientationRadioCheck=verticalOrientationRadioCheck,arSwitchCheck=arSwitchCheck,modeSwitchCheck=modeSwitchCheck,photoSwitchInterval=albumSwitchInterval)       
+    return render_template('main.html',horizontalOrientationRadioCheck = horizontalOrientationRadioCheck,verticalOrientationRadioCheck=verticalOrientationRadioCheck,arSwitchCheck=arSwitchCheck,modeSwitchCheck=modeSwitchCheck,photoSwitchInterval=albumSwitchInterval)
+
 
 
 #mode setting route
@@ -179,27 +193,30 @@ def set_mode():
     newMode = request.form.get('mode')
     if newMode:
         #Save the new mode
-        adjustAR, _, horizontalOrientationRadioCheck, verticalOrientationRadioCheck = loadSettings()
-        saveSettings(horizontalOrientationRadioCheck, verticalOrientationRadioCheck, adjustAR, newMode)
+        adjustAR, _, horizontalOrientationRadioCheck, verticalOrientationRadioCheck,photoSwitchInterval = loadSettings()
+        saveSettings(horizontalOrientationRadioCheck, verticalOrientationRadioCheck, adjustAR, newMode, photoSwitchInterval)
         return jsonify({"success": True})
     return jsonify({"error": "Invalid mode"}), 400
 
 #mode getting route
 @app.route('/get_mode', methods=['GET'])
 def get_mode():
-    _, modeSwitchCheck, _, _ = loadSettings()
+    _, modeSwitchCheck, _, _, _ = loadSettings()
     return jsonify({"mode": modeSwitchCheck})
 
 
 
 #album stuff-
 
-
 #file list
 @app.route('/files', methods=['GET'])
 def listFiles():
     files = os.listdir(app.config['ALBUM_FOLDER'])
     return jsonify(files)
+
+@app.route('/file-preview/<filename>')
+def previewFile(filename):
+    return send_from_directory(app.config['ALBUM_FOLDER'], filename)
 
 @app.route('/file/delete', methods=['POST'])
 def deleteFilesFromAlbum():
@@ -253,8 +270,8 @@ def loadSettings():
     else:
         verticalOrient = "checked"
         horizontalOrient = ""
-    return settingsData.get("adjust_aspect_ratio"),settingsData.get("frame_mode"),horizontalOrient,verticalOrient
-def saveSettings(orientationHorizontal,orientationVertical,adjustAR,frameMode):
+    return settingsData.get("adjust_aspect_ratio"),settingsData.get("frame_mode"),horizontalOrient,verticalOrient,settingsData.get("photo_interval")
+def saveSettings(orientationHorizontal,orientationVertical,adjustAR,frameMode,photo_interval):
     if orientationHorizontal == "checked":
         orientationSetting = "Horizontal"
     else:
@@ -263,6 +280,7 @@ def saveSettings(orientationHorizontal,orientationVertical,adjustAR,frameMode):
         "frame_mode":frameMode,
         "orientation":orientationSetting,
         "adjust_aspect_ratio":adjustAR,
+        "photo_interval":photo_interval,
     }
     with open(os.path.join(PATH,"config/settings.json"), "w") as f:
         json.dump(jsonStr, f)

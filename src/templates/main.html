@@ -59,10 +59,8 @@
             overflow: scroll;
             overflow-x: hidden;
         }
-        ::-webkit-scrollbar {
-            width: 0;
-            background: transparent;
-        }
+        
+        
     </style>
 </head>
 <body>
@@ -265,7 +263,7 @@
         <form method="post" enctype=multipart/form-data id="album-form">
             <input type="hidden" name="form_type" value="album_file_form">
             <br>
-            <div class="vh-1 d-flex justify-content-center align-items-center">
+            <div class=" d-flex justify-content-center align-items-center">
                 <div class="panel-body" style="border: 2px solid;border-radius: 15px;padding: 10px; ">
                     
                     <h2 class="d-flex justify-content-center">
@@ -281,8 +279,8 @@
                             Uploaded Files
                         </h4>
                     </div>
-                    <div class="mb-3 mx-3 d-flex justify-content-center" style="width: 100%;">
-                        <ul id="fileList" class="list-group" style="width: 80%; border: 2px solid; border-radius: 15px;">
+                    <div class="mb-3 d-flex justify-content-center" style="width: 100%;padding-left: 5%;padding-right: 5%;">
+                        <ul id="fileList" class="list-group" style="width: 100%; max-height: 15em; border: 2px solid; overflow-y: scroll;">
                             <!-- list of files will go here -->
                         </ul>
                     </div>
@@ -296,7 +294,7 @@
                         <label for="fileUpload" class="form-label">
                             <h4>
                                 <i class="bi bi-file-earmark-image-fill"></i>
-                                Upload Image Files
+                                Upload Images
                             </h4>
                         </label>
                         <input class="form-control" type="file" name="file" id="fileUpload" multiple>
@@ -329,18 +327,25 @@
                             //array of each file items
                             Array.from(this.files).forEach(function(file, index) {
                                 var li = document.createElement('li');
-                                li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                                li.className = 'list-group-item d-flex justify-content-center';
 
+                                var fileThumbnail = document.createElement('img');
+                                fileThumbnail.className = 'file-thumbnail';
+                                console.log(file)
                                 
+                                fileThumbnail.src = URL.createObjectURL(file);
+                                console.log(fileThumbnail.src)
+
                                 //get filename
                                 var fileNameSpan = document.createElement('span');
 
                                 fileNameSpan.className = 'file-name';
-                                fileNameSpan.innerHTML = '';
+                                fileNameSpan.innerHTML = file.name;
                                 fileNameSpan.innerHTML = '';
                                 fileNameSpan.innerHTML = '';
                                 
                                 
+                                li.appendChild(fileThumbnail);
                                 li.appendChild(fileNameSpan);
                     
                                 //delete button for each file
@@ -368,6 +373,11 @@
                             white-space: nowrap;
                             overflow: hidden;
                             text-overflow: ellipsis;
+                        }
+                        .file-thumbnail {
+                            max-width: 50px;
+                            max-height: 50px;
+                            margin-right: 10px;
                         }
                     </style>
                     
@@ -423,11 +433,13 @@
                                                     <tr>
 
                                                         <td>
-                                                            <div class="d-flex align-items-center">
-                                                                <input class="form-check-input" type="radio" id="album_photo_interval" name="album_interval" value="Horizontal Orientation" {{ horizontalOrientationRadioCheck }}>
-                                                                <label class="form-check-label" for="album_photo_interval">
-                                                                    Photo Interval
-                                                                </label>
+                                                            <label class="form-check-label" for="album_photo_interval">
+                                                                Photo Interval (mins)
+                                                            </label>
+                                                            <div class="d-flex align-items-center" style="width: 80%;">
+
+                                                                <input class="form-control" type="number" id="album_photo_interval" name="album_interval" min="1"  value="{{ photoSwitchInterval }}">
+                                                                
                                                             </div>
                                                         </td>
                                                         <td>
@@ -554,14 +566,13 @@
                         var li = document.createElement('li');
                         li.className = 'list-group-item d-flex justify-content-between align-items-center';
                         
-                        if(file.length > 16){
-                            var fileExt = file.split(".").pop();
-                            li.textContent = file.substr(0,12) + "...." + fileExt;                            
-                        }else{
-                            li.textContent = file
-                        }
                         
                         
+                        var fileThumbnail = document.createElement('img');
+                        fileThumbnail.className = 'file-thumbnail';
+                        fileThumbnail.src = `/file-preview/${file}`
+
+                        li.appendChild(fileThumbnail);
                         
 
                         var delButton = document.createElement('button');
