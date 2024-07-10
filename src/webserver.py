@@ -11,6 +11,8 @@ import RPi.GPIO as GPIO
 from PIL import ImageDraw,Image 
 import generateInfo
 
+import datetime
+
 import threading
 
 import sched
@@ -24,6 +26,8 @@ BUTTONS = [5, 6, 16, 24]
 ORIENTATION = 0
 ADJUST_AR = False
 CURRENT_MODE = "SINGLE"
+
+CURRENT_IMAGE = None
 
 #Set up RPi.GPIO
 GPIO.setmode(GPIO.BCM)
@@ -65,14 +69,174 @@ def handleButton(pin):
         updateEink("infoImage.png",0,"", "img/")
     elif(pin == 6):
         print("rotate clockwise pressed")
-        rotateImage(-90)
+        rotateImage(-90,"single_file_form")
     elif(pin == 16):
         print("rotate counter clockwise pressed")
-        rotateImage(90)
+        rotateImage(90,"single_file_form")
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+
+
+
+
+    
+   
+
+
+
+def loadSettings():
+    horizontalOrient = ""
+    verticalOrient = ""
+    try:
+        jsonFile = open(os.path.join(PATH,"config/settings.json"))
+    except:
+        saveSettings("","checked",'aria-checked="false"',"")
+        jsonFile = open(os.path.join(PATH,"config/settings.json"))
+    settingsData = json.load(jsonFile)
+    jsonFile.close()
+    if settingsData.get("orientation") == "Horizontal":
+        horizontalOrient = "checked"
+        verticalOrient = ""
+    else:
+        verticalOrient = "checked"
+        horizontalOrient = ""
+    return settingsData.get("adjust_aspect_ratio"),settingsData.get("frame_mode"),horizontalOrient,verticalOrient,settingsData.get("photo_interval")
+def saveSettings(orientationHorizontal,orientationVertical,adjustAR,frameMode,photo_interval):
+    print("1212: ",frameMode)
+    if orientationHorizontal == "checked":
+        orientationSetting = "Horizontal"
+    else:
+        orientationSetting = "Vertical"
+    jsonStr = {
+        "frame_mode":frameMode,
+        "orientation":orientationSetting,
+        "adjust_aspect_ratio":adjustAR,
+        "photo_interval":photo_interval,
+    }
+    with open(os.path.join(PATH,"config/settings.json"), "w") as f:
+        json.dump(jsonStr, f)
+
+def updateEink(filename,orientation,adjustAR,folderName):
+    with Image.open(os.path.join(PATH, folderName,filename)) as img:
+
+        #do image transforms 
+        img = changeOrientation(img,orientation)
+        img = adjustAspectRatio(img,adjustAR)    
+
+        # Display the image
+        inky_display.set_image(img)
+        inky_display.show()
+
+#clear the screen to prevent ghosting
+def clearScreen():
+    global CURRENT_IMAGE
+    if request.form["form_type"] == "album_file_form":
+        folderPath = "album/"
+        currentFile = CURRENT_IMAGE
+    else:
+        folderPath = "img/"
+        currentFile = os.listdir(app.config['UPLOAD_FOLDER'])[0]
+    print("running ghost clear")
+    img = Image.new(mode="RGB", size=(inky_display.width, inky_display.height),color=(255,255,255))
+    clearImage = ImageDraw.Draw(img)
+    inky_display.set_image(img)
+    inky_display.show()
+    updateEink(currentFile,ORIENTATION,ADJUST_AR, folderPath)
+
+
+
+def changeOrientation(img,orientation):
+    # 0 = horizontal
+    # 1 = portrait
+    if orientation == 0:
+        img = img.rotate(0)
+    elif orientation == 1:
+        img = img.rotate(90)
+    return img
+
+
+
+def adjustAspectRatio(img,adjustARBool):
+    if adjustARBool:
+        w = inky_display.width
+        h = inky_display.height
+        ratioWidth = w / img.width
+        ratioHeight = h / img.height
+        if ratioWidth < ratioHeight:
+            # It must be fixed by width
+            resizedWidth = w
+            resizedHeight = round(ratioWidth * img.height)
+        else:
+            # Fixed by height
+            resizedWidth = round(ratioHeight * img.width)
+            resizedHeight = h
+        imgResized = img.resize((resizedWidth, resizedHeight), Image.LANCZOS)
+        background = Image.new('RGBA', (w, h), (0, 0, 0, 255))
+
+        #offset image for background and paste the image
+        offset = (round((w - resizedWidth) / 2), round((h - resizedHeight) / 2))
+        background.paste(imgResized, offset)
+        img = background
+    else:
+        img = img.resize(inky_display.resolution)
+    return img
+
+def deleteImage():
+    img_directory = os.path.join(PATH, "img")
+    for filename in os.listdir(img_directory):
+        fp = os.path.join(img_directory, filename)
+        if os.path.isfile(fp):
+            os.remove(fp)
+            
+def rotateImage(deg,form_type):
+    global CURRENT_IMAGE
+    if request.form["form_type"] == "album_file_form":
+        folderPath = "album/"
+        currentFile = CURRENT_IMAGE
+    else:
+        folderPath = "img/"
+        currentFile = os.listdir(app.config['UPLOAD_FOLDER'])[0]
+    
+    print("fp:   ",PATH,folderPath,currentFile)
+    print("fp2:  ",type(PATH),type(folderPath),type(currentFile))
+    with Image.open(os.path.join(PATH, folderPath, currentFile)) as img:
+        #rotate image by degrees and update
+        img = img.rotate(deg, Image.NEAREST,expand=1)
+        img = img.save(os.path.join(PATH, folderPath,currentFile))
+        updateEink(currentFile,ORIENTATION,ADJUST_AR, folderPath)
+
+
+
+
+def shuffleAlbum():
+    global CURRENT_IMAGE
+    files = os.listdir(ALBUM_FOLDER)
+    if files:
+        CURRENT_IMAGE = random.choice(files)
+        updateEink(CURRENT_IMAGE, ORIENTATION, ADJUST_AR,"album/")
+
+def album_mode():
+    global CURRENT_IMAGE
+    while CURRENT_MODE == "SHUFFLE":
+        files = os.listdir(ALBUM_FOLDER)
+        
+        print(f"loading new picture..")
+        
+        if files:
+            
+            CURRENT_IMAGE = random.choice(files)
+            updateEink(CURRENT_IMAGE, ORIENTATION, ADJUST_AR,"album/")
+        print(f"[{datetime.datetime.now()}] sleeping...")
+        time.sleep(int(loadSettings()[4]) * 60)  # Interval in minutes
+        print("done sleeping")
+
+
+
+
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -83,7 +247,7 @@ def upload_file():
 
     print("Frame Mode: ",modeSwitchCheck)
 
-
+    print(f"Curreent Image:{CURRENT_IMAGE}")
 
     if horizontalOrientationRadioCheck == "checked":
         ORIENTATION = 0
@@ -150,20 +314,25 @@ def upload_file():
             print("shutdown")
             os.system("sudo shutdown")
 
+
         #rotate clockwise
         if request.form["submit"] == 'rotateImage':
             print("rotating image")
-            rotateImage(-90)
+            rotateImage(-90, str(request.form["form_type"]))
 
         #ghosting clears
         if request.form["submit"] == 'clearGhost':
             print("ghosting clear call!")
             clearScreen()
 
+
+        #album shuffle
+        if request.form["submit"] == 'Shuffle':
+            shuffleAlbum()
+
         #save frame settings
         if request.form["submit"] == 'Save Settings':
-            print("glep")
-            print(request.form)
+            
             
             if(request.form["frame_orientation"] == "Horizontal Orientation"):
                 horizontalOrientationRadioCheck = "checked"
@@ -196,10 +365,20 @@ def upload_file():
     return render_template('main.html',horizontalOrientationRadioCheck = horizontalOrientationRadioCheck,verticalOrientationRadioCheck=verticalOrientationRadioCheck,arSwitchCheck=arSwitchCheck,modeSwitchCheck=modeSwitchCheck,photoSwitchInterval=albumSwitchInterval)
 
 
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],filename)
+
+#mode getting route
+@app.route('/get_mode', methods=['GET'])
+def get_mode():
+    _, modeSwitchCheck, _, _, _ = loadSettings()
+    return jsonify({"mode": modeSwitchCheck})
 
 #mode setting route
 @app.route('/set_mode', methods=['POST'])
 def set_mode():
+
     global CURRENT_MODE
     newMode = request.form.get('mode')
     print("SEtmode newmode: ",newMode)
@@ -215,15 +394,7 @@ def set_mode():
         return jsonify({"success": True})
     return jsonify({"error": "Invalid mode"}), 400
 
-#mode getting route
-@app.route('/get_mode', methods=['GET'])
-def get_mode():
-    _, modeSwitchCheck, _, _, _ = loadSettings()
-    return jsonify({"mode": modeSwitchCheck})
-
-
-
-#album stuff-
+#album stuff---
 
 #file list
 @app.route('/files', methods=['GET'])
@@ -266,127 +437,6 @@ def uploadToAlbum():
         else:
             print("invalid file")
     return jsonify({"success": True})
-    
-   
-
-
-
-def loadSettings():
-    horizontalOrient = ""
-    verticalOrient = ""
-    try:
-        jsonFile = open(os.path.join(PATH,"config/settings.json"))
-    except:
-        saveSettings("","checked",'aria-checked="false"',"")
-        jsonFile = open(os.path.join(PATH,"config/settings.json"))
-    settingsData = json.load(jsonFile)
-    jsonFile.close()
-    if settingsData.get("orientation") == "Horizontal":
-        horizontalOrient = "checked"
-        verticalOrient = ""
-    else:
-        verticalOrient = "checked"
-        horizontalOrient = ""
-    return settingsData.get("adjust_aspect_ratio"),settingsData.get("frame_mode"),horizontalOrient,verticalOrient,settingsData.get("photo_interval")
-def saveSettings(orientationHorizontal,orientationVertical,adjustAR,frameMode,photo_interval):
-    print("1212: ",frameMode)
-    if orientationHorizontal == "checked":
-        orientationSetting = "Horizontal"
-    else:
-        orientationSetting = "Vertical"
-    jsonStr = {
-        "frame_mode":frameMode,
-        "orientation":orientationSetting,
-        "adjust_aspect_ratio":adjustAR,
-        "photo_interval":photo_interval,
-    }
-    with open(os.path.join(PATH,"config/settings.json"), "w") as f:
-        json.dump(jsonStr, f)
-
-def updateEink(filename,orientation,adjustAR,folderName):
-    with Image.open(os.path.join(PATH, folderName,filename)) as img:
-
-        #do image transforms 
-        img = changeOrientation(img,orientation)
-        img = adjustAspectRatio(img,adjustAR)    
-
-        # Display the image
-        inky_display.set_image(img)
-        inky_display.show()
-
-#clear the screen to prevent ghosting
-def clearScreen():
-    print("running ghost clear")
-    img = Image.new(mode="RGB", size=(inky_display.width, inky_display.height),color=(255,255,255))
-    clearImage = ImageDraw.Draw(img)
-    inky_display.set_image(img)
-    inky_display.show()
-    updateEink(os.listdir(app.config['UPLOAD_FOLDER'])[0],ORIENTATION,ADJUST_AR, "img/")
-
-
-
-def changeOrientation(img,orientation):
-    # 0 = horizontal
-    # 1 = portrait
-    if orientation == 0:
-        img = img.rotate(0)
-    elif orientation == 1:
-        img = img.rotate(90)
-    return img
-
-def adjustAspectRatio(img,adjustARBool):
-    if adjustARBool:
-        w = inky_display.width
-        h = inky_display.height
-        ratioWidth = w / img.width
-        ratioHeight = h / img.height
-        if ratioWidth < ratioHeight:
-            # It must be fixed by width
-            resizedWidth = w
-            resizedHeight = round(ratioWidth * img.height)
-        else:
-            # Fixed by height
-            resizedWidth = round(ratioHeight * img.width)
-            resizedHeight = h
-        imgResized = img.resize((resizedWidth, resizedHeight), Image.LANCZOS)
-        background = Image.new('RGBA', (w, h), (0, 0, 0, 255))
-
-        #offset image for background and paste the image
-        offset = (round((w - resizedWidth) / 2), round((h - resizedHeight) / 2))
-        background.paste(imgResized, offset)
-        img = background
-    else:
-        img = img.resize(inky_display.resolution)
-    return img
-
-def deleteImage():
-    img_directory = os.path.join(PATH, "img")
-    for filename in os.listdir(img_directory):
-        fp = os.path.join(img_directory, filename)
-        if os.path.isfile(fp):
-            os.remove(fp)
-            
-def rotateImage(deg):
-    
-    with Image.open(os.path.join(PATH, "img/",os.listdir(app.config['UPLOAD_FOLDER'])[0])) as img:
-        #rotate image by degrees and update
-        img = img.rotate(deg, Image.NEAREST,expand=1)
-        img = img.save(os.path.join(PATH, "img/",os.listdir(app.config['UPLOAD_FOLDER'])[0]))
-        updateEink(os.listdir(app.config['UPLOAD_FOLDER'])[0],ORIENTATION,ADJUST_AR, "img/")
-
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],filename)
-
-def album_mode():
-    while CURRENT_MODE == "SHUFFLE":
-        files = os.listdir(ALBUM_FOLDER)
-        print("loading new picture..")
-        if files:
-            random_file = random.choice(files)
-            updateEink(random_file, ORIENTATION, ADJUST_AR,"album/")
-        time.sleep(loadSettings()[4] * 60)  # Interval in minutes
-
 
 _,currentMode,_,_,_ = loadSettings()
     
