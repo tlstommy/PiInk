@@ -34,7 +34,7 @@ sudo bash install.sh
 
 ```
 
-Upon reboot, the PiInk program will start and be accessible on the web at the Raspberry Pi's IP address or at `piink.local`. 
+Upon reboot, the PiInk program will start and be accessible on the web at the Raspberry Pi's IP address or at `piink.local` 
 
 
 # WebUI & PiInk Buttons
