@@ -1,0 +1,11 @@
+[Unit]
+Description=PiInk webserver service
+After=syslog.target network.target
+
+[Service]
+ExecStart=bash %WORKING_DIR%/scripts/start.sh
+WorkingDirectory=%WORKING_DIR%
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
