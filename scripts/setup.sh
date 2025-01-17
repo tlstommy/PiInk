@@ -129,11 +129,31 @@ while true; do
     fi
 done
 
+
+print_header  "Creating PiInk venv "
+
+python3 -m venv piinkenv
+if [ $? -ne 0 ]; then
+  print_error "Failed to create virtual environment. Ensure Python 3 and venv (pip install venv) are installed!"
+  exit 1
+fi
+
+echo -e  "activating venv: piinkvenv..\n"
+source piinkenv/bin/activate
+if [ $? -ne 0 ]; then
+  print_error "Failed to activate virtual environment."
+  exit 1
+fi
+
+
+
 enable_interfaces
 
+
+
 print_header  "Installing the Pimoroni Inky libraries."
-sudo pip3 install inky[rpi,example-depends] > /dev/null &
-sudo pip3 install inky > /dev/null &
+pip3 install inky[rpi,example-depends]
+pip3 install inky
 show_loader "   Installing packages...    "
 #curl https://get.pimoroni.com/inky | bash
 

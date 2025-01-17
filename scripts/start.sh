@@ -29,5 +29,14 @@ else
 fi
 
 echo "starting PiInk frame webserver!"
-
-sudo python $currentDir/src/webserver.py
+if [[ -d "piinkenv" ]]; then
+  source piinkenv/bin/activate
+  if [[ $? -ne 0 ]]; then
+    echo "[ERROR]: Failed to activate the virtual environment. Please check that the venv is setup."
+    exit 1
+  fi
+  sudo python "$currentDir/src/webserver.py"
+else
+  echo "[ERROR]: Virtual environment 'piinkenv' not found. Please ensure the virtual environment is set up correctly."
+  exit 1
+fi
