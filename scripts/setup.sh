@@ -152,7 +152,8 @@ enable_interfaces
 
 #ensure pip is installed
 #sudo apt install python3-pip
-
+#manually install flask
+sudo pip install Flask==3.1.0 --break-system-packages
 
 print_header  "Installing the Pimoroni Inky libraries."
 pip3 install inky[rpi,example-depends]
