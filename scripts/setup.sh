@@ -150,6 +150,9 @@ fi
 enable_interfaces
 
 
+#ensure pip is installed
+#sudo apt install python3-pip
+
 
 print_header  "Installing the Pimoroni Inky libraries."
 pip3 install inky[rpi,example-depends]
