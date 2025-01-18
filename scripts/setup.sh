@@ -7,6 +7,7 @@ normal=$(tput sgr0)
 standout=$(tput smso)
 blink=$(tput blink)
 
+PYTHON="python"
 
 red=$(tput setaf 1)
 green=$(tput setaf 2)
@@ -84,6 +85,34 @@ print_blue() {
 }
 
 
+#borrow some venv logic from  inky install.sh  https://github.com/pimoroni/inky/blob/main/install.sh
+venv_check() {
+	PYTHON_BIN=$(which "$PYTHON")
+	if [[ $VIRTUAL_ENV == "" ]] || [[ $PYTHON_BIN != $VIRTUAL_ENV* ]]; then
+		printf "This script should be run in a virtual Python environment.\n"
+		if confirm "Would you like us to create and/or use a default one?"; then
+			printf "\n"
+			if [ ! -f "$VENV_DIR/bin/activate" ]; then
+				
+				mkdir -p "$VENV_DIR"
+				/usr/bin/python3 -m venv "$VENV_DIR" --system-site-packages
+				venv_bash_snippet
+				# shellcheck disable=SC1091
+				source "$VENV_DIR/bin/activate"
+			else
+				
+				printf "source \"%s/bin/activate\"\n" "$VENV_DIR"
+				# shellcheck disable=SC1091
+				source "$VENV_DIR/bin/activate"
+			fi
+		else
+			printf "\n"
+			fatal "Please create and/or activate a virtual Python environment and try again!\n"
+		fi
+	fi
+	printf "\n"
+}
+
 # Set the current  and ip
 currentDir=$(dirname "$PWD")
 currentWorkingDir=$(pwd)
@@ -101,6 +130,15 @@ if [ "$currentFolder" == "scripts" ]; then
   currentDir=$(pwd)
   currentWorkingDir=$(pwd)
 fi
+
+#do a python check
+if [ ! -f "$(which "$PYTHON")" ]; then
+	echo -e "\n[ERROR]: $(print_error "Python Path could not be found.\n")"
+  echo "$PYTHON"
+  exit 1
+fi
+
+#borrow venv logic from  inky install.sh
 
 while true; do
     clear
