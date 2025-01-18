@@ -154,10 +154,11 @@ enable_interfaces
 #sudo apt install python3-pip
 #manually install flask
 sudo pip install Flask==3.1.0 --break-system-packages
+sudo pip install Pillow==11.1.0 --break-system-packages
 
 print_header  "Installing the Pimoroni Inky libraries."
-pip3 install inky[rpi,example-depends]
-pip3 install inky
+sudo pip install inky[rpi,example-depends] --break-system-packages
+sudo pip install inky --break-system-packages
 show_loader "   Installing packages...    "
 #curl https://get.pimoroni.com/inky | bash
 
@@ -199,7 +200,7 @@ fi
 
 # Install required pip packages
 print_header  "\nInstalling required packages with pip"
-sudo pip install -r $currentWorkingDir/config/requirements.txt > /dev/null &
+sudo pip install -r $currentWorkingDir/config/requirements.txt --break-system-packages > /dev/null &
 show_loader "   Installing packages...   "
 
 print_success "Packages Installed!\n"
