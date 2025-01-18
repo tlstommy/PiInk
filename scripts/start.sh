@@ -1,5 +1,5 @@
 #!/bin/bash
-
+source piinkenv/bin/activate
 pid=$(lsof -i :80| awk '/python/ { pid=$2 } END { print pid }')
 currentDir=$(pwd)
 currentFolder=${PWD##*/} 
@@ -30,7 +30,7 @@ fi
 
 echo "starting PiInk frame webserver!"
 if [[ -d "piinkenv" ]]; then
-  source piinkenv/bin/activate
+  
   if [[ $? -ne 0 ]]; then
     echo "[ERROR]: Failed to activate the virtual environment. Please check that the venv is setup."
     exit 1

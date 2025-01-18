@@ -17,10 +17,15 @@ enable_interfaces(){
   #enable spi
   sudo sed -i 's/^dtparam=spi=.*/dtparam=spi=on/' /boot/config.txt
   sudo sed -i 's/^#dtparam=spi=.*/dtparam=spi=on/' /boot/config.txt
+  
+
   print_success "SPI Interface has been enabled."
+  
   #enable i2c
   sudo sed -i 's/^dtparam=i2c_arm=.*/dtparam=i2c_arm=on/' /boot/config.txt
   sudo sed -i 's/^#dtparam=i2c_arm=.*/dtparam=i2c_arm=on/' /boot/config.txt
+  
+  
   print_success "I2C Interface has been enabled.\n"
 }
 
@@ -85,43 +90,11 @@ print_blue() {
 }
 
 
-#borrow some venv logic from  inky install.sh  https://github.com/pimoroni/inky/blob/main/install.sh
-venv_check() {
-	PYTHON_BIN=$(which "$PYTHON")
-	if [[ $VIRTUAL_ENV == "" ]] || [[ $PYTHON_BIN != $VIRTUAL_ENV* ]]; then
-		printf "This script should be run in a virtual Python environment.\n"
-		if confirm "Would you like us to create and/or use a default one?"; then
-			printf "\n"
-			if [ ! -f "$VENV_DIR/bin/activate" ]; then
-				
-				mkdir -p "$VENV_DIR"
-				/usr/bin/python3 -m venv "$VENV_DIR" --system-site-packages
-				venv_bash_snippet
-				# shellcheck disable=SC1091
-				source "$VENV_DIR/bin/activate"
-			else
-				
-				printf "source \"%s/bin/activate\"\n" "$VENV_DIR"
-				# shellcheck disable=SC1091
-				source "$VENV_DIR/bin/activate"
-			fi
-		else
-			printf "\n"
-			fatal "Please create and/or activate a virtual Python environment and try again!\n"
-		fi
-	fi
-	printf "\n"
-}
 
-# Set the current  and ip
-currentDir=$(dirname "$PWD")
-currentWorkingDir=$(pwd)
-currentFolder=${PWD##*/} 
-ipAddress=$(hostname -I | cut -d ' ' -f 1)
 
 # do a sudo check!
-if [ "$EUID" -ne 0 ]; then
-  echo -e "\n[ERROR]: $(print_error "The PiInk installation script requires root privileges. Please run it with sudo.\n")"
+if [ "$(id -u)" -eq 0 ]; then
+  echo -e "\n[ERROR]: $(print_error "The PiInk installation script requires to not be ran with root privileges. Please run it with sudo.\n")"
   exit 1
 fi
 
@@ -138,13 +111,13 @@ if [ ! -f "$(which "$PYTHON")" ]; then
   exit 1
 fi
 
-#borrow venv logic from  inky install.sh
 
 while true; do
     clear
     print_header "Current Directory: $currentWorkingDir"
     print_bold "\nThis script will install all the required packages for PiInk!\n"
     print_underline "$(print_bold "It will do the following:\n")"
+    echo "   [•] Create a virtual enviroment'."
     echo "   [•] Set the hostname to 'PiInk'."
     echo "   [•] Setup bonjour."
     echo "   [•] Create a log file."
@@ -170,19 +143,27 @@ done
 
 print_header  "Creating PiInk venv "
 
-python3 -m venv piinkenv
+python3 -m venv --system-site-packages piinkenv
+
 if [ $? -ne 0 ]; then
   print_error "Failed to create virtual environment. Ensure Python 3 and venv (pip install venv) are installed!"
   exit 1
 fi
 
 echo -e  "activating venv: piinkvenv..\n"
+
 source piinkenv/bin/activate
 if [ $? -ne 0 ]; then
   print_error "Failed to activate virtual environment."
   exit 1
 fi
 
+
+# Set the current  and ip
+currentDir=$(dirname "$PWD")
+currentWorkingDir=$(pwd)
+currentFolder=${PWD##*/} 
+ipAddress=$(hostname -I | cut -d ' ' -f 1)
 
 
 enable_interfaces
@@ -191,20 +172,33 @@ enable_interfaces
 #ensure pip is installed
 #sudo apt install python3-pip
 #manually install flask
-sudo pip install Flask==3.1.0 --break-system-packages
-sudo pip install Pillow==11.1.0 --break-system-packages
 
-print_header  "Installing the Pimoroni Inky libraries."
-sudo pip install inky[rpi,example-depends] --break-system-packages
-sudo pip install inky --break-system-packages
-show_loader "   Installing packages...    "
+
+print_header  "Installing the Pimoroni Inky libraries..."
+$PYTHON -m pip install inky[rpi,example-depends]
+$PYTHON -m pip install inky 
+#show_loader "   Installing packages...    "
 #curl https://get.pimoroni.com/inky | bash
 
+# Install required pip packages
+print_header  "\nInstalling required packages with pip..."
+$PYTHON -m pip install -r $currentWorkingDir/config/requirements.txt
+#show_loader "   Installing packages...   "
+
+print_success "Packages Installed!\n"
 sudo apt-get install -y sysvbanner > /dev/null
 
 print_success "Installed!\n"
 
 sleep 1
+
+
+
+
+
+
+
+
 #set the hostname
 print_bold "Setting hostname"
 sudo bash -c 'echo "piink" > "/etc/hostname"'
@@ -215,35 +209,30 @@ echo -e "(This can be changed using raspi-config.) \n"
 #set up Bonjour
 print_header "Setting up Bonjour"
 
-sudo apt-get install -y avahi-daemon > /dev/null &
-show_loader "   [1/2] Installing avahi-daemon."
+sudo apt-get install -y avahi-daemon
+#show_loader "   [1/2] Installing avahi-daemon."
 
-sudo apt-get install -y netatalk > /dev/null &
-show_loader "   [2/2] Installing netatalk.    "
+sudo apt-get install -y netatalk 
+#show_loader "   [2/2] Installing netatalk.    "
 
 print_success "Bonjour set up!\n"
 
 # Create the log file
-touch "$currentWorkingDir/piink-log.txt"
+sudo touch "$currentWorkingDir/piink-log.txt"
 
 # Update rc.local
 print_bold "Updating rc.local"
 sleep 1
 if grep -Fxq "exit 0" /etc/rc.local; then
-  sudo sed -i "/exit 0/i cd $currentWorkingDir && sudo bash $currentWorkingDir/scripts/start.sh > $currentWorkingDir/piink-log.txt 2>&1 &" /etc/rc.local
+  sudo sed -i "/exit 0/i cd $currentWorkingDir && bash $currentWorkingDir/scripts/start.sh > $currentWorkingDir/piink-log.txt 2>&1 &" /etc/rc.local
   print_success "Added startup line to rc.local!"
 else
   print_error "ERROR: Unable to add to rc.local"
 fi
 
-# Install required pip packages
-print_header  "\nInstalling required packages with pip"
-sudo pip install -r $currentWorkingDir/config/requirements.txt --break-system-packages > /dev/null &
-show_loader "   Installing packages...   "
 
-print_success "Packages Installed!\n"
 sleep 3
-clear
+#clear
 banner "PiInk"
 print_success "$(print_bold "PiInk has been successfully installed!")"
 
