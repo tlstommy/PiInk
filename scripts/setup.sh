@@ -218,6 +218,9 @@ print_success "Bonjour set up!\n"
 # Create the log file
 sudo touch "$currentWorkingDir/piink-log.txt"
 
+mkdir "$currentWorkingDir/album"
+
+
 # Update rc.local
 print_bold "Updating rc.local"
 sleep 1
