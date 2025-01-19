@@ -26,12 +26,6 @@ fi
 currentDir=$(pwd)
 currentFolder=${PWD##*/} 
 
-# do a sudo check!
-if [ "$EUID" -ne 0 ]; then
-  echo -e "\n[ERROR]: The PiInk start script requires root privileges. Please run it with sudo.\n"
-  exit 1
-fi
-
 #dir check
 if [ "$currentFolder" == "scripts" ]; then
   cd ..
