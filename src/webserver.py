@@ -454,4 +454,4 @@ for pin in BUTTONS:
 if __name__ == '__main__':
     app.secret_key = str(random.randint(100000,999999))
     threading.Thread(target=album_mode, daemon=True).start()
-    app.run(host="0.0.0.0",port=80)
+    app.run(host="0.0.0.0",port=8080)
