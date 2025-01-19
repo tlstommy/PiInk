@@ -16,11 +16,15 @@ yellow=$(tput setaf 3)
 enable_interfaces(){
   #enable spi
   sudo raspi-config nonint do_spi 0
+  sudo bash -c 'echo "dtoverlay=spi0-0cs" >> /boot/firmware/config.txt'	
   print_success "SPI Interface has been enabled."
   
   #enable i2c
   sudo raspi-config nonint do_i2c 0  
   print_success "I2C Interface has been enabled.\n"
+
+  
+  
 }
 
 
