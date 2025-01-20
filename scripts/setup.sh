@@ -93,7 +93,7 @@ print_blue() {
 
 # do a sudo check!
 if [ "$(id -u)" -eq 0 ]; then
-  echo -e "\n[ERROR]: $(print_error "The PiInk installation script requires to not be ran with root privileges. Please run it with sudo.\n")"
+  echo -e "\n[ERROR]: $(print_error "The PiInk installation script should not be ran as root.\n")"
   exit 1
 fi
 
@@ -221,6 +221,8 @@ sudo touch "$currentWorkingDir/piink-log.txt"
 
 mkdir "$currentWorkingDir/album"
 
+#make sure the start.sh script is executable
+chmod +x "$currentWorkingDir/scripts/start.sh"
 
 # create systemd service
 print_bold "Creating new systemd service"
