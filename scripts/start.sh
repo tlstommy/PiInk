@@ -53,7 +53,7 @@ if [[ -d "piinkenv" ]]; then
     exit 1
   fi
   
-  sudo python "$currentDir/src/webserver.py"
+  python "$currentDir/src/webserver.py"
 else
   echo "[ERROR]: Virtual environment 'piinkenv' not found. Please ensure the virtual environment is set up correctly."
   exit 1
