@@ -8,6 +8,7 @@ standout=$(tput smso)
 blink=$(tput blink)
 
 PYTHON="python"
+SERVICE_FILE="/etc/systemd/system/piink.service"
 
 red=$(tput setaf 1)
 green=$(tput setaf 2)
@@ -169,7 +170,7 @@ enable_interfaces
 
 #ensure pip is installed
 #sudo apt install python3-pip
-#manually install flask
+#manually install flask?
 
 
 print_header  "Installing the Pimoroni Inky libraries..."
@@ -221,15 +222,25 @@ sudo touch "$currentWorkingDir/piink-log.txt"
 mkdir "$currentWorkingDir/album"
 
 
-# Update rc.local
-print_bold "Updating rc.local"
+# create systemd service
+print_bold "Creating new systemd service"
 sleep 1
-if grep -Fxq "exit 0" /etc/rc.local; then
-  sudo sed -i "/exit 0/i cd $currentWorkingDir && bash $currentWorkingDir/scripts/start.sh > $currentWorkingDir/piink-log.txt 2>&1 &" /etc/rc.local
-  print_success "Added startup line to rc.local!"
-else
-  print_error "ERROR: Unable to add to rc.local"
-fi
+echo "[Unit]
+Description=PiInk Webserver
+After=network.target
+
+[Service]
+User=pi
+WorkingDirectory=$currentWorkingDir
+ExecStart=$currentWorkingDir/scripts/start.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target" | sudo tee $SERVICE_FILE > /dev/null
+
+sudo systemctl daemon-reload
+sudo systemctl enable piink.service
+print_success "Systemd service PiInk Webserver has been created and enabled!"
 
 
 sleep 3
