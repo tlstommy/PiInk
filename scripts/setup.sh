@@ -120,7 +120,7 @@ while true; do
     echo "   [•] Set the hostname to 'PiInk'."
     echo "   [•] Setup bonjour."
     echo "   [•] Create a log file."
-    echo "   [•] Update rc.local so that the Webserver starts on boot."
+    echo "   [•] Create a new systemd service."
     echo -e "   [•] Install Required Python packages via pip.\n"
 
     read -p "Would you like to proceed? [Y/n] " userInput
@@ -167,12 +167,6 @@ ipAddress=$(hostname -I | cut -d ' ' -f 1)
 
 enable_interfaces
 
-
-#ensure pip is installed
-#sudo apt install python3-pip
-#manually install flask?
-
-
 print_header  "Installing the Pimoroni Inky libraries..."
 $PYTHON -m pip install inky[rpi,example-depends]
 $PYTHON -m pip install inky 
@@ -190,13 +184,6 @@ sudo apt-get install -y sysvbanner > /dev/null
 print_success "Installed!\n"
 
 sleep 1
-
-
-
-
-
-
-
 
 #set the hostname
 print_bold "Setting hostname"
@@ -246,7 +233,7 @@ print_success "Systemd service PiInk Webserver has been created and enabled!"
 
 
 sleep 3
-#clear
+clear
 banner "PiInk"
 print_success "$(print_bold "PiInk has been successfully installed!")"
 
