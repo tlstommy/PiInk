@@ -212,7 +212,7 @@ mkdir "$currentWorkingDir/album"
 chmod +x "$currentWorkingDir/scripts/start.sh"
 
 # create systemd service
-print_bold "Creating new systemd service"
+print_header "Creating new systemd service"
 sleep 1
 echo "[Unit]
 Description=PiInk Webserver
