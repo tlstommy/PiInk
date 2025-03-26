@@ -1,34 +1,20 @@
 #!/bin/bash
 
-#formatting stuff
+#formatting stuff-------
 bold=$(tput bold)
 underline=$(tput smul)
 normal=$(tput sgr0)
 standout=$(tput smso)
 blink=$(tput blink)
-
-PYTHON="python"
-SERVICE_FILE="/etc/systemd/system/piink.service"
-
 red=$(tput setaf 1)
 green=$(tput setaf 2)
 yellow=$(tput setaf 3)
 
-enable_interfaces(){
-  #enable spi
-  sudo raspi-config nonint do_spi 0
-  sudo bash -c 'echo "dtoverlay=spi0-0cs" >> /boot/firmware/config.txt'	
-  print_success "SPI Interface has been enabled."
-  
-  #enable i2c
-  sudo raspi-config nonint do_i2c 0  
-  print_success "I2C Interface has been enabled.\n"
 
-  
-  
-}
+PYTHON="python"
+SERVICE_FILE="/etc/systemd/system/piink.service"
 
-
+#loader/spinner function-------
 show_loader() {
   local pid=$!
   local delay=0.1
@@ -48,47 +34,29 @@ show_loader() {
 }
 
 
-#status funcs
-print_header() {
-  echo -e "${bold}${underline}$1${normal}"
+#status print functions-------
+print_header()		{ echo -e "${bold}${underline}$1${normal}"; }
+print_standout()	{ echo -e "${standout}$1${normal}"; }
+print_blink()		{ echo -e "${blink}$1${normal}"; }
+print_bold()		{ echo -e "${bold}$1${normal}"; }
+print_underline()	{ echo -e "${underline}$1${normal}"; }
+print_success()		{ echo -e "${green}$1${normal}"; }
+print_error()		{ echo -e "${red}$1${normal}"; }
+print_warn()		{ echo -e "\e[38;2;255;255;0m$1\e[0m"; }
+print_blue()		{ echo -e "\e[38;2;65;105;225m$1\e[0m"; }
+
+
+#SPI & I2C setup-------
+enable_interfaces(){
+  #enable spi
+  sudo raspi-config nonint do_spi 0
+  sudo bash -c 'echo "dtoverlay=spi0-0cs" >> /boot/firmware/config.txt'	
+  print_success "SPI Interface has been enabled."
+  
+  #enable i2c
+  sudo raspi-config nonint do_i2c 0  
+  print_success "I2C Interface has been enabled.\n"
 }
-
-print_standout() {
-  echo -e "${standout}$1${normal}"
-}
-
-print_blink() {
-  echo -e "${blink}$1${normal}"
-}
-
-print_bold() {
-  echo -e "${bold}$1${normal}"
-}
-
-print_underline() {
-  echo -e "${underline}$1${normal}"
-}
-
-
-print_success() {
-  echo -e "${green}$1${normal}"
-}
-
-print_error() {
-  echo -e "${red}$1${normal}"
-}
-
-# better color vals than tput
-print_warn() {
-  echo -e "\e[38;2;255;255;0m$1\e[0m"
-
-}
-
-print_blue() {
-  echo -e "\e[38;2;65;105;225m$1\e[0m"
-}
-
-
 
 
 # do a sudo check!
@@ -96,6 +64,9 @@ if [ "$(id -u)" -eq 0 ]; then
   echo -e "\n[ERROR]: $(print_error "The PiInk installation script should not be ran as root.\n")"
   exit 1
 fi
+
+currentWorkingDir=$(pwd)
+currentFolder=${PWD##*/}
 
 if [ "$currentFolder" == "scripts" ]; then
   cd ..
@@ -105,7 +76,7 @@ fi
 
 #do a python check
 if [ ! -f "$(which "$PYTHON")" ]; then
-	echo -e "\n[ERROR]: $(print_error "Python Path could not be found.\n")"
+	echo -e "\n[ERROR]: $(print_error "Could not find python on PATH\n")"
   echo "$PYTHON"
   exit 1
 fi
@@ -116,7 +87,7 @@ while true; do
     print_header "Current Directory: $currentWorkingDir"
     print_bold "\nThis script will install all the required packages for PiInk!\n"
     print_underline "$(print_bold "It will do the following:\n")"
-    echo "   [•] Create a virtual enviroment'."
+    echo "   [•] Create a virtual environment."
     echo "   [•] Set the hostname to 'PiInk'."
     echo "   [•] Setup bonjour."
     echo "   [•] Create a log file."
@@ -127,7 +98,7 @@ while true; do
     userInput="${userInput^^}"
 
     if [[ $userInput == "Y" ]]; then
-        print_success "You entered 'Y'. Proceeding with the installation.\n"
+        print_success "You entered 'Y'. Proceeding with the installation...\n"
         sleep 2
         break
     elif [[ $userInput == "N" ]]; then
@@ -140,42 +111,51 @@ while true; do
 done
 
 
-print_header  "Creating PiInk venv "
-
-python3 -m venv --system-site-packages piinkenv
-
-if [ $? -ne 0 ]; then
-  print_error "Failed to create virtual environment. Ensure Python 3 and venv (pip install venv) are installed!"
-  exit 1
+#virtual enviroment setup-------
+if [ -d ".venv" ]; then
+  print_warn "Virtual environment already exists. Skipping creation..."
+else
+	print_header  "Creating PiInk venv "
+	python3 -m venv --system-site-packages .venv
+	if [ $? -ne 0 ]; then
+	  print_error "Failed to create virtual environment. Ensure Python 3 and venv (pip install venv) are installed!"
+	  exit 1
+	fi
 fi
 
-echo -e  "activating venv: piinkvenv..\n"
+echo -e  "activating venv...\n"
 
-source piinkenv/bin/activate
+source .venv/bin/activate
+
 if [ $? -ne 0 ]; then
   print_error "Failed to activate virtual environment."
   exit 1
 fi
 
+if [ ! -f "$VIRTUAL_ENV/bin/pip" ]; then
+  print_warn "pip not found in virtual environment. Installing pip..."
+  "$VIRTUAL_ENV/bin/python" -m ensurepip --upgrade
+fi
 
-# Set the current  and ip
+# Set the current dir and ip
 currentDir=$(dirname "$PWD")
 currentWorkingDir=$(pwd)
 currentFolder=${PWD##*/} 
 ipAddress=$(hostname -I | cut -d ' ' -f 1)
 
 
+
 enable_interfaces
 
 print_header  "Installing the Pimoroni Inky libraries..."
-$PYTHON -m pip install inky[rpi,example-depends]
-$PYTHON -m pip install inky 
+"$VIRTUAL_ENV/bin/pip" install inky[rpi,example-depends]
+"$VIRTUAL_ENV/bin/pip" install inky 
 #show_loader "   Installing packages...    "
 #curl https://get.pimoroni.com/inky | bash
 
 # Install required pip packages
 print_header  "\nInstalling required packages with pip..."
-$PYTHON -m pip install -r $currentWorkingDir/config/requirements.txt
+"$VIRTUAL_ENV/bin/pip" install -r $currentWorkingDir/config/requirements.txt
 #show_loader "   Installing packages...   "
 
 print_success "Packages Installed!\n"
@@ -185,14 +165,15 @@ print_success "Installed!\n"
 
 sleep 1
 
-#set the hostname
+
+#Hostname Setup-------
 print_bold "Setting hostname"
 sudo bash -c 'echo "piink" > "/etc/hostname"'
 sudo sed -i 's/127.0.0.1\s*localhost/127.0.0.1 piink/' /etc/hosts
 print_success "Hostname set to piink!"
 echo -e "(This can be changed using raspi-config.) \n"
 
-#set up Bonjour
+#Bonjour Setup-------
 print_header "Setting up Bonjour"
 
 sudo apt-get install -y avahi-daemon
@@ -203,15 +184,15 @@ sudo apt-get install -y netatalk
 
 print_success "Bonjour set up!\n"
 
-# Create the log file
-sudo touch "$currentWorkingDir/piink-log.txt"
 
+#Log stuff-------
+sudo touch "$currentWorkingDir/piink-log.txt"
 mkdir "$currentWorkingDir/album"
 
 #make sure the start.sh script is executable
 chmod +x "$currentWorkingDir/scripts/start.sh"
 
-# create systemd service
+# create systemd service-------
 print_header "Creating new systemd service"
 sleep 1
 echo "[Unit]
@@ -232,6 +213,10 @@ sudo systemctl enable piink.service
 print_success "Systemd service PiInk Webserver has been created and enabled!"
 
 
+
+
+
+#final prints-------
 sleep 3
 clear
 banner "PiInk"
