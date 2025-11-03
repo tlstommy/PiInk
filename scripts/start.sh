@@ -12,8 +12,8 @@ else
 fi
 
 #activate venv
-if [[ -d "piinkenv" ]]; then
-    source piinkenv/bin/activate
+if [[ -d ".venv" ]]; then
+    source .venv/bin/activate
     if [[ $? -ne 0 ]]; then
         echo "[ERROR]: Cant activate venv: piinkenv."
         exit 1
@@ -46,7 +46,7 @@ else
 fi
 
 echo "starting PiInk frame webserver!"
-if [[ -d "piinkenv" ]]; then
+if [[ -d ".venv" ]]; then
   
   if [[ $? -ne 0 ]]; then
     echo "[ERROR]: Failed to activate the virtual environment. Please check that the venv is setup."
